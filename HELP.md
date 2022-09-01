@@ -26,4 +26,4 @@ The following guides illustrate how to use some features concretely:
 These additional references should also help you:
 
 * [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)
-
+* [Storing Data Persistently with JPA](https://stackoverflow.com/a/63216560)
