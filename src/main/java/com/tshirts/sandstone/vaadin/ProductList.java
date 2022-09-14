@@ -15,7 +15,8 @@ public class ProductList extends Scroller {
     ArrayList<Product> products = new ArrayList<>();
 
     public ProductList(String jsonFile) {
-        addClassName("product-list");
+
+
         // Generate the list of products that are displayed in the product list from the json file.
         populateProductList(jsonFile);
         // Make a VerticalLayout that contains the rows of products.

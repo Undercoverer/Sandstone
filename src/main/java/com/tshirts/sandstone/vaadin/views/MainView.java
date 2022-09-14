@@ -1,7 +1,9 @@
-package com.tshirts.sandstone.vaadin;
+package com.tshirts.sandstone.vaadin.views;
 
 // A Main view that is the application made with vaadin
 
+import com.tshirts.sandstone.vaadin.ProductDetails;
+import com.tshirts.sandstone.vaadin.ProductList;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Paragraph;
@@ -23,6 +25,7 @@ public class MainView extends VerticalLayout {
      * The footer contains the name of the website and the contact information.
      */
     public MainView() {
+        this.getStyle().set("overflow", "hidden");
         addClassName("main-view");
         add(generateMenuBar());
         add(generateMainContent());
@@ -67,6 +70,12 @@ public class MainView extends VerticalLayout {
         Button cart = new Button(new Icon(VaadinIcon.CART));
         navigationButtons.add(cart);
 
+        Button login = new Button(new Icon(VaadinIcon.USER));
+        login.addClickListener(e -> {
+            login.getUI().ifPresent(ui -> ui.navigate("login"));
+        });
+        navigationButtons.add(login);
+
         menuBar.add(navigationButtons);
         menuBar.setVerticalComponentAlignment(Alignment.CENTER, navigationButtons);
 
@@ -86,7 +95,8 @@ public class MainView extends VerticalLayout {
     private SplitLayout generateMainContent() {
         SplitLayout mainContent = new SplitLayout();
         mainContent.setOrientation(SplitLayout.Orientation.HORIZONTAL);
-        mainContent.setSplitterPosition(30);
+        mainContent.setSplitterPosition(100);
+        mainContent.getStyle().set("overflow", "hidden");
         mainContent.addToPrimary(new ProductList("src/main/resources/products.json"));
         mainContent.addToSecondary(new ProductDetails());
         return mainContent;
