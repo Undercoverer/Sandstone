@@ -28,190 +28,226 @@
 | 4.2.4 Software Interfaces            |
 | 5. Non-Functional Requirements       |
 
-## 1. <span id="_Toc113453891" class="anchor"></span>**Introduction**
+## 1. **Introduction**
 
     1. **Purpose:** The goal of your project and the objectives it aims
        to accomplish
 
-    2. **Document conventions:** The typographical methodologies
-       followed within the document.
+### b. **Document conventions:**
 
-> Full description of the main objectives of this document in the
-> context of your project.
+> "The purpose of this Software Requirements Document (SRD) is to
+> describe the client and developer view requirements for Sandstone.
+> Client-oriented requirements describe the system from the client's perspective.
+> These requirements include a description of the different types of users served by
+> the system. Developer-oriented requirements describe the system from the view of
+> a software developer. These requirements include a detailed description of functional,
+> data, performance, and other requirements."
+
+### c. **Definitions, Acronyms, and Abbreviations**
+
+| **Term**                              | **Definition
+Acronym,Abbreviation**                                                                                                                                            |
+|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Supply                                | A stock of a resource from which a person or place can be provided with the necessary amount of resource.                                                                      |                                                                                                                                            |
+| Demand                                | An economic principle that the consumer wants to purchase goods or services and willingness to pay a price for a specific good or service.                                     |                                                                                                                                         |
+| Java                                  | A programming language created by Sun. We will be using this language to build Sandstone.                                                                                      |
+| DB                                    | An abbreviation for Database.                                                                                                                                                  |
+| Vaadin                                | Vaadin is a website design tool that we use for the web pages                                                                                                                  |
+| Spring Boot                           | Spring Boot is a Java-based framework used to create spring applications with the help of microservices                                                                        |                                                                                                  
+| Spring                                | Spring is a framework that is used to build Java applications                                                                                                                  |
+| JPA                                   | Java Persistence API is an API specification that is used to persistently store Java objects in a database.                                                                    |                                                                                                                                  |
+| API                                   | Application Programming Interface is a set of routines, protocols, and tools for building software applications.                                                               |
+| JSON                                  | JavaScript Object Notation is a lightweight data-interchange format that is easy for humans to read and write.                                                                 |
+| HTML                                  | Hypertext Markup Language is the standard markup language for creating web pages and web applications.                                                                         |
+| CSS                                   | Cascading Style Sheets is a style sheet language used for describing the presentation of a document written in a markup language                                               |
+
+### d. **Intended audience:**
+
+> The intended audience for this document is the developers and the
+> project managers. The developers will use this document to understand
+> the requirements of the project and the project managers will use this
+> document to understand the requirements of the project.
 >
-> Here’s how you should begin this section:
-
-“The purpose of this Software Requirements Document (SRD) is to...”
-
-“In it, we will . . ., . . ., and . . ..”
-
-> For example:
+> Secondary audiences include the users of the application. The users
+> will make use of this document to understand the functionality of the application.
 >
-> “The purpose of this Software Requirements Document (SRD) is to
-> describe the client-view and developer-view requirements for the
-> Automated Police Ticketing System (APTS). Client-oriented requirements
-> describe the system from the client’s perspective. These requirements
-> include a description of the different types of users served by the
-> system. Developer-oriented requirements describe the system from a
-> software developer’s perspective. These requirements include a
-> detailed description of functional, data, performance, and other
-> important requirements.”
+> The sections of the document that are intended for the developers are
+> sections 3, 4, and 5. The sections of the document that are intended for
+> the project managers are sections 2, 3, 4, and 5. The sections of the
+> document that are intended for the users are sections 1, 2, and 3.
 
-### 3. **Definitions, Acronyms, and Abbreviations**
+### e. **Project Scope:**
 
-Include any specialized terminology dictated by the application area or
-the product area.
+> The goals of the project are to create a software that will allow
+> businesses to manage their inventory and sales. The software will allow
+> businesses to see the inventory of their stock, the sales of their stock,
+> and the profit of their stock. There are many benefits to this software as
+> one might expect. The software goals align with the majority of all business
+> goals as it will allow businesses to keep close watch over their sales and help
+> them reorient their business to better suit their customers.
+>
 
-For example:
+### f. **Technology Challenges:**
 
-| **Term**         | **Definition.
-Acronym,Abbreviation**                                                                                                 |
-|------------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| .Net             | A set of software technologies from Microsoft for connection information, people, and computer systems.                              |
-| ATPS             | An abbreviation for Automated Police Ticketing System. This is the name of the system that is being built.                           |
-| C#               | A programming language created by Microsoft. We will be using this language to build the ATPS.                                       |
-| DB               | An abbreviation for Database.                                                                                                        |
-| MS               | An abbreviation for Microsoft. Microsoft is a large software company which produces the software that will be used to implement ATPS. |
-| Microsoft Access | A database software created by Microsoft. The campus police vehicle violation database was created using Microsoft Access.           |
+> The technology challenges that the project may face are those general to any
+> software development project. The challenges include the development of the
+> software, the testing of the software, and the deployment of the software.
+> The development of the software will be a challenge as it will require the
+> development of a web application. The testing of the software will be a
+> challenge as it will require writing satisfactory test cases. The deployment
+> of the software will be a challenge as it will require setting up a server to
+> host the application.
 
-### 4. **Intended audience:** Describe which part of the SRS document is
-   intended for which reader. Include a list of all stakeholders of the
-   project, developers, project managers, and users for better clarity.
+### g. **References:**
 
-### 5. **Project Scope:** Specify how the software goals align with the
-   overall business goals and outline the benefits of the project to
-   business.
+> [1] Spring boot tutorial -https://www.tutorialspoint.com/spring_boot/spring_boot_introduction.htm
+>
+> [2] Official Gradle documentation - https://docs.gradle.org/current/userguide/userguide.html
+>
+> [3] Spring Boot Gradle Plugin Reference
+> Guide- https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/html/
+>
+> [4] Create an OCI image - https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/html/#build-image
+>
+> [5] Vaadin - https://vaadin.com/docs/latest/tutorial/overview
+>
+> [6] Spring Data JPA - https://spring.io/projects/spring-data-jpa
+>
+> [7] Spring Web - https://docs.spring.io/spring-boot/docs/2.7.3/reference/htmlsingle/#web
+>
+> [8] Accessing Data with JPA - https://spring.io/guides/gs/accessing-data-jpa/
+>
+> [9] Storing Data persistently with JPA - https://stackoverflow.com/a/63216560
 
-### 6. **Technology Challenges:**
-
-### 7. **References:** Mention books, articles, web sites, worksheets,
-   people who are sources of information about the application domain,
-   etc. Use proper and complete reference notation. Give links to
-   documents as appropriate. You should use the APA Documentation model
-   (Alred, 2003, p. 144).
-
-> Alred, F., Brusaw, C., and Oliu, W. (2003). *Handbook of Technical
-> Writing* (7<sup>th</sup> ed.)*.* Boston: Bedford/St. Martin’s.
-
-## 2. ## General Description
+## 2. General Description
 
     1. **Product perspective:** Describe the context and origin of the
        product.
 
-    <!-- -->
+### 2. **Product features:**
 
-    2. **Product features:** A high level summary of the functions the
-       software would perform and the features to be included.
+Allow users to register an account, log in, log out, determine their
+storehouse items as well as their stock's price, sales, profit, and supply.
 
-    3. **User class and characteristics:** A categorization and
-       > profiling of the users the software is intended for and their
-       > classification into different user classes
+### 3. **User class and characteristics:**
 
-> For Example:
->
 > Our website application does not expect our users to have any prior
-> knowledge of a computer, apart from using a web browser, or knowledge
-> of astronomy. Our website application has removed the need for them to
-> have astronomy, math, or science knowledge and allows the user to
-> focus on exploring the night sky.
+> knowledge of a computer, apart from using a web browser.
+> The users of our application are expected to be able to understand
+> the basic concepts of supply and demand. It would be helpful for the users of our
+> application to have some knowledge of macroeconomics and microeconomics, but it is not required.
+>
+> User classes:
+> - **Administrators:** The administrators are the people who have the highest level of access to the application and
+    can perform all operations.
+> - **Managers:** The manager is the person who has the second-highest level of access to the application and can
+    perform all managerial operations.
+> - **Users:** The users are the people who have the second-lowest level of access to the application and can only
+    perform operations that are related to the inventory and sales of the stock.
+> - **Guests:** The guest is the person who has the lowest level of access to the application and can only browse public
+    pages of the application.
 
-### 4. **Operating environment:** Specification of the environment the
-   > software is being designed to operate in.
+### 4. **Operating environment:**
+
+> The operating environment of the software is a web browser. The software will be
+> deployed on a server and will be accessed by the users through a web browser.
 
 ### 5. **Constraints:** Any limiting factors that would pose challenge to
-   > the development of the software. These include both design as well
-   > as implementation constraints.
 
-> For example:
+> The design and implementation constraints of the software are the following:
+> - Due to the use of a web application, the software will only be accessible over the internet
+> - Some features of the software will only be available to users who have an account
+> - The software will only be accessible through a web browser
+> - The user data will be stored in a database and all important data will be hashed and salted (like potatoes)
+
+### 6. **Assumptions and dependencies:**
+
+> The assumptions that we have made regarding the software product are the following:
+> - The software will run on modern web browsers
+> - The software will be deployed on a server
+> - The software will be accessed by the users over the internet or on a local network
+> - The APIs used by the software will be stable and will not change
+> - The earth is round and not flat
 >
-> Due to the use of a 3d engine, we had to limit the web browsers
-> supported. To limit user error when entering the user’s address, we
-> implemented a drop-down AJAX country, state, and city selection.
-
-### 6. **Assumptions and dependencies:** A list of all assumptions that you
-   > have made regarding the software product and the environment along
-   > with any external dependencies which may affect the project
+> The dependencies that we have made regarding the software product are the following:
+> - Vaadin
+> - Spring Boot
+> - Spring Data JPA
+> - H2 Database
+> - Spring Web
+> - Gradle
+> - PlaceHolderAPI
+> - GSON
 
 ## Functional Requirements
 
-Functional requirements
-
-Statements of services the system should provide, how the system should
-react to particular inputs and how the system should behave in
-particular situations.
-
 ### 1. **Primary**
 
-> All the requirements within the system or sub-system in order to
-> determine the output that the software is expected to give in relation
-> to the given input. These consist of the design requirements, graphics
-> requirements, operating system requirements and constraints if any.
+- FR0: When the user visits the main page, they will be asked to log in or register
+  an account if they do not have one, they cannot access the website
+- FR1: When the user logs in or registers successfully, they will be redirected to the dashboard page where they can
+  interact according to their permission level
+- FR2: When the user visits the dashboard page, they will be able to see the inventory of their stock, the sales of
+  their stock, and the profit of their stock
+    - FR2.1: The dashboard page will contain a search bar that will allow the user to search for a specific item in
+      their inventory
+    - FR2.2: The dashboard page will contain a button that will allow the user to add a new item to their inventory or
+      to import items from a JSON file
+- FR3: When the user clicks on one of the items on the menu bar, they will be taken to their respective pages
+    - FR3.1: When the user clicks on the "Account" button, they will be taken to their account
+    - FR3.2: When the user clicks on the "Home" button, they will be taken to the dashboard page
+    - FR3.3: When the user clicks on the "Upload" button, they will be taken to the upload page
+    - FR3.4: When the user clicks on the "Logout" button, they will be logged out and redirected to the main page and be
+      logged out
+    - FR3.5: If the user is an administrator, they will be able to see the "Admin" button on the menu bar
+        - FR3.5.1: When the user clicks on the "Admin" button, they will be taken to the admin page where they will be
+          able to
+        - FR3.5.1.1: See the list of all the users
+        - FR3.5.1.2: See the list of all the managers
+        - FR3.5.1.3: Edit the information of a user
+        - FR3.5.1.4: Delete a user
+        - FR3.5.1.5: Restart the application
+        - FR3.5.1.6: See an audit log of all the actions that have been performed
+- FR4: When the user visits the account page, they will be able to see their account information
+    - FR4.1: The account page will contain a button that will allow the user to edit their account information
+    - FR4.2: The account page will contain a button that will allow the user to delete their account
+- FR5: When the user visits the upload page, they will be able to upload a JSON file that contains the items that they
+  want to add to their inventory
 
-For Example:
+### 5. Technical Requirements
 
-- FR0: The system will allow the user to lookup of vehicle owner
-  information based on license plate number. This information will
-  contain owner’s permit number, assigned lot, and previous violations
-  including tow history.
+1. **Operating System & Compatibility**
 
-- FR1: The system will allow the user to enter a new vehicle into the
-  vehicle violation database.
+    1. **Interface requirements**
+   > The software will be accessible through a web browser
 
-- FR2: The system will allow the user to issue a ticket. The ticket
-  information will be issued in electronic and paper form.
+    2. **User Interfaces**
+   > The software will have a graphical user interface
 
-- FR3: The system will automatically fill in data fields using vehicle
-  owner information should a ticket need to be issued.
+> The user interface of the software is designed on Vaadin
+> The user interface of the software is designed to be simple and easy to use.
+> The user interface of the software is designed to be responsive and to work on all devices. The user interface of the
+> software is designed to be accessible to all users.
 
-- FR4: The system will allow the user to update a ticket after the
-  ticket has been issued.
+3. **Hardware Interfaces**
 
-- FR5: The system will allow the user to delete a ticket after the
-  ticket has been issued.
+> The hardware interfaces of the software are the following:
+> - The software will be deployed on a server
+> - The software will be accessed by the users through a web browser on any device that supports a web browser
 
-- FR6: The system will keep the user’s ticket information and the
-  server’s vehicle violation database synchronized to within 24 hours.
+4. **Communication Interfaces**
 
-    1. **Secondary:** Some functions that are used to support the primary
-       requirements.
+> The communication interfaces of the software are as follows:
+> - HTTP
+> - HTTPS
+> - JSON
 
-### 2. Technical Requirements
+5. **Software Interfaces**
 
-<span id="_Toc113453895" class="anchor"></span>**Operating
-System & Compatibility**
-
-<span id="_Toc113453896" class="anchor"></span>**Interface
-requirements**
-
-<span id="_Toc113453897" class="anchor"></span>**User
-Interfaces**
-
-> The logic behind the interactions between the users and the software.
-> This includes the sample screen layout, buttons and functions that
-> would appear on every screen, messages to be displayed on each screen
-> and the style guides to be used.
-
-2. <span id="_Toc113453898" class="anchor"></span>**Hardware
-   Interfaces**
-
-> All the hardware-software interactions with the list of supported
-> devices on which the software is intended to run on, the network
-> requirements along with the list of communication protocols to be
-> used.
-
-3. <span id="_Toc113453899" class="anchor"></span>**Communications
-   Interfaces**
-
-> Determination of all the communication standards to be utilized by the
-> software as a part of the project
-
-4. <span id="_Toc113453900" class="anchor"></span>**Software
-   Interfaces**
-
-The interaction of the software to be developed with other software
-components such as frontend and the backend framework to the used, the
-database management system and libraries describing the need and the
-purpose behind each of them.
+> The software will use the following public APIs:
+> 1.) [Placeholder](https://placeholder.com/)
+> 2.) [PicSum](https://picsum.photos/)
+>
 
 ## Non-Functional Requirements
 
@@ -233,22 +269,14 @@ requirement. The rationale behind it also needs to be elaborated upon.
 - NFR3(R): The system (including the local copy of the vehicle violation
   database) will consume less than 50MB of memory
 
-- NFR5(R): The novice user will be able to create and print a ticket in
-  less than 5 minutes.
+- NFR4(R): The expert user will be able to upload their JSON data in
+  less than 10 seconds.
 
-- NFR6(R): The expert user will be able to create and print a ticket in
-  less than 1 minute.
+2. **Safety requirements**
 
--
-    1. **Safety requirements**
+- NFR5(R): User passwords will always be obfuscated.
 
-List out any safeguards that need to be incorporated as a measure
-against any possible harm the use of the software application may cause.
-
-2. **Security requirements**
-
-Privacy and data protection regulations that need to be adhered to while
-designing of the product. For Example:
+3. **Security requirements**
 
 - NFR7(R): The system will only be usable by authorized users.
 
@@ -280,44 +308,29 @@ designing of the product. For Example:
 
         5. Portability
 
-Detailing on the additional qualities that need to be incorporated
-within the software like maintainability, adaptability, flexibility,
-usability, reliability, portability etc.
+4. **Process Requirements**
+    1. The software will be developed using the Git version control system
 
-1. **Process Requirements**
+    2. The software will be developed using the Scrum methodology
 
-<!-- -->
+    3. Meetings will be held every week to discuss the progress of the
+       project
 
-1.
+    4. All the meetings will be held on Discord
 
-2.
+    5. The software will be developed using the Agile methodology
+        1. The software will be developed in iterations
 
-3.
+        2. Sprints will be held every week
 
-4.
+        3. The software will be developed in a test-driven manner
 
-5.
-    1.
+    6. The delivery date of the software will be 2022-11-29
+    7. The cost of the software will be $0.00 because we are wholesome
+       people
 
-    2.
+5. **Other requirements**
 
-    3.
-
-    4.
-
-    5.
-        1. Development Process Used
-
-        2. Time Constraints
-
-        3. Cost and Delivery Date
-
-<!-- -->
-
-    1. **Other requirements**
-
-These may include the legal requirements, resource utilizations, future
-updates etc.
 
 - NFR4(R): The system will conform to FERPA guidelines to maintain
   student privacy.
