@@ -4,15 +4,18 @@
 
 ### ***(SRS) Document***
 
-**\< Sandstone\>**
+**Sandstone**
 
 **9/15/2022**
 
-**\<Version\>**
+**0.1.0**
 
 **By: Fox Johnjulio, Benjamin Beach, Silas Bucur**
 
-**\<Honor Code\>**
+**We agree to abide by the UNCG academic integrity policy**
+
+
+____
 
 | **Table of Contents**                |
 |--------------------------------------|
@@ -30,8 +33,10 @@
 
 ## 1. **Introduction**
 
-    1. **Purpose:** The goal of your project and the objectives it aims
-       to accomplish
+### a. **Purpose:**
+
+> Sandstone is designed to allow inventory management to see the inventory of their stock,
+> the sales of their stock,
 
 ### b. **Document conventions:**
 
@@ -121,8 +126,9 @@ Acronym,Abbreviation**                                                          
 
 ## 2. General Description
 
-    1. **Product perspective:** Describe the context and origin of the
-       product.
+### 1. **Product perspective:**
+
+We wanted to make this because we have to do it
 
 ### 2. **Product features:**
 
@@ -251,23 +257,14 @@ storehouse items as well as their stock's price, sales, profit, and supply.
 
 ## Non-Functional Requirements
 
-Constraints on the services or functions offered by the system (e.g.,
-timing constraints, constraints on the development process, standards,
-etc.). Often apply to the system as a whole rather than individual
-features or services.
-
 1. **Performance requirements**
 
-For Example:
+- NFR1(R): The user's computer must be capable of running a modern web browser
 
-The performance requirements need to be specified for every functional
-requirement. The rationale behind it also needs to be elaborated upon.
+- NFR2(R): The system will require enough memory to run the web browser
 
-- NFR2(R): The local copy of the vehicle violation database will consume
-  less than 20 MB of memory
-
-- NFR3(R): The system (including the local copy of the vehicle violation
-  database) will consume less than 50MB of memory
+- NFR3(R): The novice user will be able to upload their JSON data in
+  less than 2 minutes.
 
 - NFR4(R): The expert user will be able to upload their JSON data in
   less than 10 seconds.
@@ -278,26 +275,10 @@ requirement. The rationale behind it also needs to be elaborated upon.
 
 3. **Security requirements**
 
-- NFR7(R): The system will only be usable by authorized users.
+- NFR6(R): The system will only be usable by authorized users.
 
     1. **Software quality attributes**
 
-1.
-
-2.
-
-3.
-
-4.
-
-5.
-    1.
-
-    2.
-
-    3.
-
-    4.
         1. Availability
 
         2. Correctness
@@ -332,37 +313,7 @@ requirement. The rationale behind it also needs to be elaborated upon.
 5. **Other requirements**
 
 
-- NFR4(R): The system will conform to FERPA guidelines to maintain
-  student privacy.
-
-All SRS/SRD should be:
-
-- **Correct:** A method of analysis that ensures that the software meets
-  the requirements identified.
-
-- **Unambiguous:** There is only one interpretation of what the software
-  will be used for and it is communicated in a common language.
-
-- **Complete:** There is a representation for all requirements for
-  functionality, performance, design constraints, attributes, or
-  external interfaces.
-
-- **Consistent:** Must be in agreement with other documentation,
-  including a systems requirements specification and other documents.
-
-- **Ranked for Importance and/or Stability:** Since all requirements are
-  not of equal weight, you should employ a method to appropriately rank
-  requirements.
-
-- **Verifiable:** Use measurable elements and defined terminology to
-  avoid ambiguity.
-
-- **Modifiable:** A well-defined organizational structure of the SRS
-  document that avoids redundancies can allow easy adaptation.
-
-- **Traceable:** Ability to trace back to the origin of development and
-  move forward to the documents produced from the SRS.
-
-- **Legible and Professionally Presented**: Must use a consistent font
-  and style. Must have proper formatting of tables and charts. Must be
-  grammatically correct. Use active tense and concise sentences.
+- NFR7(R): The system will conform to all local, regional, and national
+  laws. We will not be held responsible for any illegal actions that are performed using the system.
+- NFR8(R): The system will be free to use for all users.
+- NFR9(R): The system will be updated on an as-needed basis.
