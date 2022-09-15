@@ -46,20 +46,20 @@
 ### c. **Definitions, Acronyms, and Abbreviations**
 
 | **Term**                              | **Definition
-Acronym,Abbreviation**                                                                                                                                            |
-|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Supply                                | A stock of a resource from which a person or place can be provided with the necessary amount of resource.                                                                      |                                                                                                                                            |
-| Demand                                | An economic principle that the consumer wants to purchase goods or services and willingness to pay a price for a specific good or service.                                     |                                                                                                                                         |
-| Java                                  | A programming language created by Sun. We will be using this language to build Sandstone.                                                                                      |
-| DB                                    | An abbreviation for Database.                                                                                                                                                  |
-| Vaadin                                | Vaadin is a website design tool that we use for the web pages                                                                                                                  |
-| Spring Boot                           | Spring Boot is a Java-based framework used to create spring applications with the help of microservices                                                                        |                                                                                                  
-| Spring                                | Spring is a framework that is used to build Java applications                                                                                                                  |
-| JPA                                   | Java Persistence API is an API specification that is used to persistently store Java objects in a database.                                                                    |                                                                                                                                  |
-| API                                   | Application Programming Interface is a set of routines, protocols, and tools for building software applications.                                                               |
-| JSON                                  | JavaScript Object Notation is a lightweight data-interchange format that is easy for humans to read and write.                                                                 |
-| HTML                                  | Hypertext Markup Language is the standard markup language for creating web pages and web applications.                                                                         |
-| CSS                                   | Cascading Style Sheets is a style sheet language used for describing the presentation of a document written in a markup language                                               |
+Acronym,Abbreviation**                                                                                                        |
+|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
+| Supply                                | A stock of a resource from which a person or place can be provided with the necessary amount of resource.                                  |                                                                                                                                            |
+| Demand                                | An economic principle that the consumer wants to purchase goods or services and willingness to pay a price for a specific good or service. |                                                                                                                                         |
+| Java                                  | A programming language created by Sun. We will be using this language to build Sandstone.                                                  |
+| DB                                    | An abbreviation for Database.                                                                                                              |
+| Vaadin                                | Vaadin is a website design tool that we use for the web pages                                                                              |
+| Spring Boot                           | Spring Boot is a Java-based framework used to create spring applications with the help of microservices                                    |                                                                                                  
+| Spring                                | Spring is a framework that is used to build Java applications                                                                              |
+| JPA                                   | Java Persistence API is an API specification that is used to persistently store Java objects in a database.                                |                                                                                                                                  |
+| API                                   | Application Programming Interface is a set of routines, protocols, and tools for building software applications.                           |
+| JSON                                  | JavaScript Object Notation is a lightweight data-interchange format that is easy for humans to read and write.                             |
+| HTML                                  | Hypertext Markup Language is the standard markup language for creating web pages and web applications.                                     |
+| CSS                                   | Cascading Style Sheets is a style sheet language used for describing the presentation of a document written in a markup language           |
 
 ### d. **Intended audience:**
 
