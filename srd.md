@@ -1,49 +1,34 @@
-****Software Engineering****
+# Software Engineering
 
-****Software Requirements Specification****
+### ****Software Requirements Specification****
 
-***(SRS) Document***
+### ***(SRS) Document***
 
 **\< Sandstone\>**
 
-**\<Date\>**
+**9/15/2022**
 
 **\<Version\>**
 
-**\<By: Team Member names\>**
+**By: Fox Johnjulio, Benjamin Beach, Silas Bucur**
 
 **\<Honor Code\>**
 
-| **Table of Contents** |
-|-----------------------|
+| **Table of Contents**                |
+|--------------------------------------|
+| 1. Introduction                      |
+| 2. General Description               |
+| 3. Functional Requirements           |
+| 4. Technical Requirements            |
+| 4.1 Operating System & Compatibility |
+| 4.2 Interface requirements           |
+| 4.2.1 User Interfaces                |
+| 4.2.2 Hardware Interfaces            |
+| 4.2.3 Communications Interfaces      |
+| 4.2.4 Software Interfaces            |
+| 5. Non-Functional Requirements       |
 
-[1. Introduction [2](#_Toc113453891)](#_Toc113453891)
-
-[2. General Description [3](#general-description)](#general-description)
-
-[3. Functional Requirements
-[3](#functional-requirements)](#functional-requirements)
-
-[4. Technical Requirements
-[4](#technical-requirements)](#technical-requirements)
-
-[4.1 Operating System & Compatibility
-[4](#_Toc113453895)](#_Toc113453895)
-
-[4.2 Interface requirements [4](#_Toc113453896)](#_Toc113453896)
-
-[4.2.1 User Interfaces [4](#_Toc113453897)](#_Toc113453897)
-
-[4.2.2 Hardware Interfaces [4](#_Toc113453898)](#_Toc113453898)
-
-[4.2.3 Communications Interfaces [4](#_Toc113453899)](#_Toc113453899)
-
-[4.2.4 Software Interfaces [4](#_Toc113453900)](#_Toc113453900)
-
-[5. Non-Functional Requirements
-[4](#non-functional-requirements)](#non-functional-requirements)
-
-1. <span id="_Toc113453891" class="anchor"></span>**Introduction**
+## 1. <span id="_Toc113453891" class="anchor"></span>**Introduction**
 
     1. **Purpose:** The goal of your project and the objectives it aims
        to accomplish
@@ -72,34 +57,34 @@
 > detailed description of functional, data, performance, and other
 > important requirements.”
 
-3. **Definitions, Acronyms, and Abbreviations**
+### 3. **Definitions, Acronyms, and Abbreviations**
 
 Include any specialized terminology dictated by the application area or
 the product area.
 
 For example:
 
-| **Term**         | **Definition. Acronym,
-Abbreviation**                                                                                                 |
-|------------------|---------------------------------------------------------------------------------------------------------------------------------------|
-| .Net             | A set of software technologies from Microsoft for connection information, people, and computer systems.                               |
-| ATPS             | An abbreviation for Automated Police Ticketing System. This is the name of the system that is being built.                            |
-| C#               | A programming language created by Microsoft. We will be using this language to build the ATPS.                                        |
-| DB               | An abbreviation for Database.                                                                                                         |
+| **Term**         | **Definition.
+Acronym,Abbreviation**                                                                                                 |
+|------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| .Net             | A set of software technologies from Microsoft for connection information, people, and computer systems.                              |
+| ATPS             | An abbreviation for Automated Police Ticketing System. This is the name of the system that is being built.                           |
+| C#               | A programming language created by Microsoft. We will be using this language to build the ATPS.                                       |
+| DB               | An abbreviation for Database.                                                                                                        |
 | MS               | An abbreviation for Microsoft. Microsoft is a large software company which produces the software that will be used to implement ATPS. |
-| Microsoft Access | A database software created by Microsoft. The campus police vehicle violation database was created using Microsoft Access.            |
+| Microsoft Access | A database software created by Microsoft. The campus police vehicle violation database was created using Microsoft Access.           |
 
-4. **Intended audience:** Describe which part of the SRS document is
+### 4. **Intended audience:** Describe which part of the SRS document is
    intended for which reader. Include a list of all stakeholders of the
    project, developers, project managers, and users for better clarity.
 
-5. **Project Scope:** Specify how the software goals align with the
+### 5. **Project Scope:** Specify how the software goals align with the
    overall business goals and outline the benefits of the project to
    business.
 
-6. **Technology Challenges:**
+### 6. **Technology Challenges:**
 
-7. **References:** Mention books, articles, web sites, worksheets,
+### 7. **References:** Mention books, articles, web sites, worksheets,
    people who are sources of information about the application domain,
    etc. Use proper and complete reference notation. Give links to
    documents as appropriate. You should use the APA Documentation model
@@ -108,7 +93,7 @@ Abbreviation**                                                                  
 > Alred, F., Brusaw, C., and Oliu, W. (2003). *Handbook of Technical
 > Writing* (7<sup>th</sup> ed.)*.* Boston: Bedford/St. Martin’s.
 
-2.  ## General Description
+## 2. ## General Description
 
     1. **Product perspective:** Describe the context and origin of the
        product.
@@ -130,10 +115,10 @@ Abbreviation**                                                                  
 > have astronomy, math, or science knowledge and allows the user to
 > focus on exploring the night sky.
 
-4. **Operating environment:** Specification of the environment the
+### 4. **Operating environment:** Specification of the environment the
    > software is being designed to operate in.
 
-5. **Constraints:** Any limiting factors that would pose challenge to
+### 5. **Constraints:** Any limiting factors that would pose challenge to
    > the development of the software. These include both design as well
    > as implementation constraints.
 
@@ -143,7 +128,7 @@ Abbreviation**                                                                  
 > supported. To limit user error when entering the user’s address, we
 > implemented a drop-down AJAX country, state, and city selection.
 
-6. **Assumptions and dependencies:** A list of all assumptions that you
+### 6. **Assumptions and dependencies:** A list of all assumptions that you
    > have made regarding the software product and the environment along
    > with any external dependencies which may affect the project
 
@@ -155,7 +140,7 @@ Statements of services the system should provide, how the system should
 react to particular inputs and how the system should behave in
 particular situations.
 
-1. **Primary**
+### 1. **Primary**
 
 > All the requirements within the system or sub-system in order to
 > determine the output that the software is expected to give in relation
@@ -190,16 +175,16 @@ For Example:
     1. **Secondary:** Some functions that are used to support the primary
        requirements.
 
-2.  ## Technical Requirements
+### 2. Technical Requirements
 
-    1. <span id="_Toc113453895" class="anchor"></span>**Operating
-       System & Compatibility**
+<span id="_Toc113453895" class="anchor"></span>**Operating
+System & Compatibility**
 
-    2. <span id="_Toc113453896" class="anchor"></span>**Interface
-       requirements**
+<span id="_Toc113453896" class="anchor"></span>**Interface
+requirements**
 
-        1. <span id="_Toc113453897" class="anchor"></span>**User
-           Interfaces**
+<span id="_Toc113453897" class="anchor"></span>**User
+Interfaces**
 
 > The logic behind the interactions between the users and the software.
 > This includes the sample screen layout, buttons and functions that
