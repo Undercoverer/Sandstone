@@ -9,7 +9,7 @@
 | 2. Use Case Descriptions             |
 
 
-### 1.) ![Use case diagram](Use Case Diagram.png)
+### 1.) Use case diagram: ![Use case diagram](https://raw.githubusercontent.com/Undercoverer/Sandstone/master/Use%20Case%20Diagram.png)
 
 ### 2.) Use Case Descriptions
 #### a.) Brief Description
