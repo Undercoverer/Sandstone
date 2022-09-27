@@ -51,7 +51,18 @@
         1. ) The user enters their username and password into the system.
         2. ) The system checks if the username and password match an existing account.
         3. ) If the username and password are valid, the system logs the user in.
-    3. )
+    3. ) What can go wrong:
+        1. ) The username and password do not match an existing account. The system will notify the user that the
+           username and password do not match an existing account.
+        2. ) The user enters an invalid username or password. The system will notify the user that the username or
+           password is invalid.
+       3. ) The user is already logged in. The system will notify the user that they are already logged in.
+    4. ) Other activities:
+        1. ) Forgot password: The user can request a password reset. The system will email the user with a
+           link to reset their password.
+       2. ) Forgot username: The user can request a username reminder. The system will email the user with their
+           username.
+    5. ) System state on completion: The user is logged in.
 - **View Stock Data**
     1. ) Initial Assumption: The user is logged in and has a permission level that allows them to view stock data.
     2. ) Normal Flow:
