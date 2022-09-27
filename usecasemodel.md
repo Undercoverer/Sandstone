@@ -34,7 +34,7 @@
 #### b.) Use case description scenarios
 
 - **Register New Account**:
-    1. ) Initial Assumptions: The user is not already registered with the system.\
+    1. ) Initial Assumptions: The user is not already registered with the system.
     2. ) Normal Flow:
         1. ) The user enters their desired username and password into the system.
         2. ) The system checks if the username is already taken.
