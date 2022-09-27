@@ -50,8 +50,7 @@ ____
 
 ### c. **Definitions, Acronyms, and Abbreviations**
 
-| **Term**                              | **Definition
-Acronym,Abbreviation**                                                                                                        |
+| **Term**                              | **Definition, Acronym, Abbreviation**                                                                                                      |
 |---------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
 | Supply                                | A stock of a resource from which a person or place can be provided with the necessary amount of resource.                                  |                                                                                                                                            |
 | Demand                                | An economic principle that the consumer wants to purchase goods or services and willingness to pay a price for a specific good or service. |                                                                                                                                         |
@@ -317,3 +316,7 @@ storehouse items as well as their stock's price, sales, profit, and supply.
   laws. We will not be held responsible for any illegal actions that are performed using the system.
 - NFR8(R): The system will be free to use for all users.
 - NFR9(R): The system will be updated on an as-needed basis.
+
+## Appendix
+
+### 1. [Use Case Model](usecasemodel.md)
