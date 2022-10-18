@@ -1,5 +1,9 @@
 package com.tshirts.sandstone.vaadin.views;
 
+import com.tshirts.sandstone.vaadin.managers.LoginManager;
+import com.tshirts.sandstone.vaadin.managers.ProfileManager;
+import com.tshirts.sandstone.vaadin.util.Profile;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Paragraph;
@@ -18,11 +22,16 @@ import com.vaadin.flow.router.Route;
  * The registration link contains a button to go to the registration page.
  * The login form is validated before the user can log in.
  */
-@Route("login")
+@Route(value = "login", registerAtStartup = true)
 public class LoginView extends VerticalLayout {
 
 
     public LoginView() {
+        if (LoginManager.getInstance().isLoggedIn()) {
+            // Navigate to profile page
+            UI.getCurrent().navigate("profile");
+            UI.getCurrent().getPage().reload();
+        }
         VerticalLayout loginForm = generateLoginForm();
         this.add(loginForm);
         setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
@@ -98,10 +107,22 @@ public class LoginView extends VerticalLayout {
                 password.setInvalid(emptyPassword);
                 password.setErrorMessage("Please enter your %s %s %s".formatted(emptyUsername ? "username" : "", emptyUsername && emptyPassword ? "and" : "", emptyPassword ? "password" : ""));
             } else {
-                username.setInvalid(false);
-                password.setInvalid(false);
-                this.getUI().ifPresent(ui -> ui.navigate("/"));
+                Profile profile = ProfileManager.getInstance().getProfile(username.getValue(), password.getValue());
+                if (profile != null) {
+                    // Navigate to main page
+                    LoginManager.getInstance().setLoggedIn(true, profile);
+                    username.setInvalid(false);
+                    password.setInvalid(false);
+                    UI.getCurrent().navigate("/");
+                    UI.getCurrent().getPage().reload();
+                } else {
+
+                    username.setInvalid(true);
+                    password.setInvalid(true);
+                    password.setErrorMessage("Invalid username or password");
+                }
             }
+
         });
         form.add(username, password, login);
         form.add(generateRegistrationLink());
@@ -127,9 +148,7 @@ public class LoginView extends VerticalLayout {
         text.getStyle().set("font-size", "15px");
         Button register = new Button("Register");
         register.getStyle().set("font-size", "15px");
-        register.addClickListener(event -> {
-            register.getUI().ifPresent(ui -> ui.navigate("register"));
-        });
+        register.addClickListener(event -> register.getUI().ifPresent(ui -> ui.navigate("register")));
 
         registrationLink.add(text, register);
         return registrationLink;

@@ -1,5 +1,7 @@
 package com.tshirts.sandstone;
 
+import com.tshirts.sandstone.vaadin.managers.LoginManager;
+import com.tshirts.sandstone.vaadin.managers.ProfileManager;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
@@ -10,9 +12,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class SandstoneApplication implements AppShellConfigurator {
-
+    static {
+        LoginManager.getInstance();
+        ProfileManager.getInstance();
+    }
     public static void main(String[] args) {
         SpringApplication.run(SandstoneApplication.class, args);
+        ProfileManager.getInstance().writeToFile();
     }
 
 }

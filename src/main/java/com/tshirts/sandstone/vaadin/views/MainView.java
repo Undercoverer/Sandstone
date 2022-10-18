@@ -4,7 +4,10 @@ package com.tshirts.sandstone.vaadin.views;
 
 import com.tshirts.sandstone.vaadin.ProductDetails;
 import com.tshirts.sandstone.vaadin.ProductList;
+import com.tshirts.sandstone.vaadin.managers.LoginManager;
+import com.tshirts.sandstone.vaadin.managers.ProfileManager;
 import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.Icon;
@@ -25,6 +28,14 @@ public class MainView extends VerticalLayout {
      * The footer contains the name of the website and the contact information.
      */
     public MainView() {
+        LoginManager loginManager = LoginManager.getInstance();
+        ProfileManager profileManager = ProfileManager.getInstance();
+
+        if (!loginManager.isLoggedIn()) {
+            // Navigate to login page
+            UI.getCurrent().navigate("login");
+            UI.getCurrent().getPage().reload();
+        }
         this.getStyle().set("overflow", "hidden");
         addClassName("main-view");
         add(generateMenuBar());
@@ -65,6 +76,9 @@ public class MainView extends VerticalLayout {
         navigationButtons.add(home);
 
         Button about = new Button(new Icon(VaadinIcon.INFO_CIRCLE));
+        about.addClickListener(e -> {
+            UI.getCurrent().navigate("users");
+        });
         navigationButtons.add(about);
 
         Button cart = new Button(new Icon(VaadinIcon.CART));
@@ -72,7 +86,11 @@ public class MainView extends VerticalLayout {
 
         Button login = new Button(new Icon(VaadinIcon.USER));
         login.addClickListener(e -> {
-            login.getUI().ifPresent(ui -> ui.navigate("login"));
+            if (LoginManager.getInstance().isLoggedIn()) {
+                UI.getCurrent().navigate("profile");
+            } else {
+                UI.getCurrent().navigate("login");
+            }
         });
         navigationButtons.add(login);
 
