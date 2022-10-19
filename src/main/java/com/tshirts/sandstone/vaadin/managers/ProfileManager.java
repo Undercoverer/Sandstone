@@ -28,18 +28,19 @@ public class ProfileManager implements Closeable {
         Stream<Profile> profileStream = profiles.stream();
         return switch (type) {
             case "username" ->
-                    profileStream.filter(profile -> profile.getUsername().contains(value)).toArray(Profile[]::new);
-            case "email" -> profileStream.filter(profile -> profile.getEmail().contains(value)).toArray(Profile[]::new);
+                    profileStream.filter(profile -> profile.getUsername().toLowerCase().contains(value.toLowerCase())).toArray(Profile[]::new);
+            case "email" ->
+                    profileStream.filter(profile -> profile.getEmail().toLowerCase().contains(value.toLowerCase())).toArray(Profile[]::new);
             case "id" ->
-                    profileStream.filter(profile -> String.valueOf(profile.getProfileId()).contains(value)).toArray(Profile[]::new);
+                    profileStream.filter(profile -> String.valueOf(profile.getProfileId()).contains(value.toLowerCase())).toArray(Profile[]::new);
             case "firstName" ->
-                    profileStream.filter(profile -> profile.getFirstName().contains(value)).toArray(Profile[]::new);
+                    profileStream.filter(profile -> profile.getFirstName().toLowerCase().contains(value.toLowerCase())).toArray(Profile[]::new);
             case "lastName" ->
-                    profileStream.filter(profile -> profile.getLastName().contains(value)).toArray(Profile[]::new);
+                    profileStream.filter(profile -> profile.getLastName().toLowerCase().contains(value.toLowerCase())).toArray(Profile[]::new);
             case "phoneNumber" ->
-                    profileStream.filter(profile -> profile.getPhone().contains(value)).toArray(Profile[]::new);
+                    profileStream.filter(profile -> profile.getPhone().toLowerCase().contains(value.toLowerCase())).toArray(Profile[]::new);
             case "permissionLevel" ->
-                    profileStream.filter(profile -> profile.getPermissionLevel().toString().contains(value)).toArray(Profile[]::new);
+                    profileStream.filter(profile -> profile.getPermissionLevel().toString().toLowerCase().contains(value.toLowerCase())).toArray(Profile[]::new);
             default -> null;
         };
     }
@@ -112,7 +113,7 @@ public class ProfileManager implements Closeable {
 
     public Profile getProfile(String usernameOrEmail, String password) {
         for (Profile profile : profiles) {
-            if ((profile.getUsername().equals(usernameOrEmail) || profile.getEmail().equals(usernameOrEmail)) && profile.getPassword().equals(password)) {
+            if ((profile.getUsername().equals(usernameOrEmail) || profile.getEmail().equals(usernameOrEmail)) && profile.getPassword().equals(password.hashCode() + "")) {
                 return profile;
             }
         }

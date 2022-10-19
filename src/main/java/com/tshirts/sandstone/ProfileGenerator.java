@@ -16,11 +16,9 @@ import java.util.Random;
 public class ProfileGenerator {
 
     public static void main(String[] args) {
-        int count = 1000;
+        int count = 3000;
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Profile[] profiles = new Profile[count];
-        // Use https://randomuser.me/api/?results=1000 to get a list of 1000 random users.
-        // Open a stream to the api
 
         HttpsURLConnection connection;
         try {
@@ -56,7 +54,7 @@ public class ProfileGenerator {
             profiles[i] = new Profile(username, firstName, lastName, email, phone, password, profileID, permissionLevel);
         }
         // Add test profile for admin.
-        profiles[0] = new Profile("username0", "firstName0", "lastName0", "email0@gmail.com", "8675309", "password0", 0, PermissionLevel.ADMIN);
+        profiles[0] = new Profile("username0", "firstName0", "lastName0", "email0@gmail.com", "8675309", "password0".hashCode()+ "", 0, PermissionLevel.ADMIN);
 
         // Write the profiles to a json file.
         try {

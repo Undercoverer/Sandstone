@@ -44,7 +44,7 @@ public class Profile {
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
-        this.password = password;
+        this.password = password.hashCode() + "";
         this.profileId = profileId;
         this.permissionLevel = permissionLevel;
     }
@@ -86,7 +86,7 @@ public class Profile {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = password.hashCode() + "";
     }
 
     public int getProfileId() {

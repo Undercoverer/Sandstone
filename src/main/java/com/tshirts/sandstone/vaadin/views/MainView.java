@@ -5,9 +5,11 @@ package com.tshirts.sandstone.vaadin.views;
 import com.tshirts.sandstone.vaadin.ProductDetails;
 import com.tshirts.sandstone.vaadin.ProductList;
 import com.tshirts.sandstone.vaadin.managers.LoginManager;
+import com.tshirts.sandstone.vaadin.util.Profile;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -81,7 +83,28 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         Button login = new Button(new Icon(VaadinIcon.USER));
         login.addClickListener(e -> {
             if (LoginManager.getInstance().isLoggedIn()) {
-                UI.getCurrent().navigate("profile");
+                // Create dialog to display profile information and a logout button
+                Dialog dialog = new Dialog();
+                dialog.getElement().getStyle().set("font-size", "18px");
+
+                dialog.add(new Paragraph("Profile information"));
+                Profile loggedInUser = LoginManager.getInstance().getLoggedInUser();
+                dialog.add(new Paragraph("Name: %s %s".formatted(loggedInUser.getFirstName(), loggedInUser.getLastName())));
+                dialog.add(new Paragraph("Email: %s".formatted(loggedInUser.getEmail())));
+                dialog.add(new Paragraph("Phone number: %s".formatted(loggedInUser.getPhone())));
+                dialog.add(new Paragraph("Profile Id: %s".formatted(loggedInUser.getProfileId())));
+                dialog.add(new Paragraph("Permissions: %s".formatted(loggedInUser.getPermissionLevel())));
+
+                Button logout = new Button("Logout");
+                logout.addClickListener(event -> {
+                    LoginManager.getInstance().setLoggedIn(false, null);
+                    dialog.close();
+                    // Wait for the dialog to close before navigating to the login page
+                    UI.getCurrent().getPage().executeJs("setTimeout(() => { window.location.replace('/login'); }, 100);");
+                });
+
+                dialog.add(logout);
+                dialog.open();
             } else {
                 UI.getCurrent().navigate("login");
             }
