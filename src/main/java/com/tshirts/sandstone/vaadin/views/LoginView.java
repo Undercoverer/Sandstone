@@ -12,6 +12,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 
 /**
@@ -22,16 +24,9 @@ import com.vaadin.flow.router.Route;
  * The registration link contains a button to go to the registration page.
  * The login form is validated before the user can log in.
  */
-@Route(value = "login", registerAtStartup = true)
-public class LoginView extends VerticalLayout {
-
-
+@Route(value = "login")
+public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     public LoginView() {
-        if (LoginManager.getInstance().isLoggedIn()) {
-            // Navigate to profile page
-            UI.getCurrent().navigate("profile");
-            UI.getCurrent().getPage().reload();
-        }
         VerticalLayout loginForm = generateLoginForm();
         this.add(loginForm);
         setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
@@ -109,12 +104,11 @@ public class LoginView extends VerticalLayout {
             } else {
                 Profile profile = ProfileManager.getInstance().getProfile(username.getValue(), password.getValue());
                 if (profile != null) {
-                    // Navigate to main page
+                    // Go to main page
                     LoginManager.getInstance().setLoggedIn(true, profile);
                     username.setInvalid(false);
                     password.setInvalid(false);
-                    UI.getCurrent().navigate("/");
-                    UI.getCurrent().getPage().reload();
+                    UI.getCurrent().navigate("");
                 } else {
 
                     username.setInvalid(true);
@@ -152,5 +146,13 @@ public class LoginView extends VerticalLayout {
 
         registrationLink.add(text, register);
         return registrationLink;
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+        if (LoginManager.getInstance().isLoggedIn()) {
+            // Navigate to profile page
+            beforeEnterEvent.forwardTo("profile");
+        }
     }
 }

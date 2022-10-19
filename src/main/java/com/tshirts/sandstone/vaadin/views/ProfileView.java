@@ -2,26 +2,23 @@ package com.tshirts.sandstone.vaadin.views;
 
 import com.tshirts.sandstone.vaadin.managers.LoginManager;
 import com.tshirts.sandstone.vaadin.util.Profile;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 
 @Route(value = "profile")
-public class ProfileView extends VerticalLayout {
+public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
     public ProfileView() {
         addClassName("profile-view");
         // All profile information goes here
         LoginManager loginManager = LoginManager.getInstance();
-        if (loginManager.isLoggedIn()) {
-            Profile loggedInUser = loginManager.getLoggedInUser();
-            add(generateFromProfile(loggedInUser));
-        } else {
-            // Navigate to login page
-            UI.getCurrent().navigate("login");
-            UI.getCurrent().getPage().reload();
-        }
+
+        Profile loggedInUser = loginManager.getLoggedInUser();
+        add(generateFromProfile(loggedInUser));
+
     }
 
 
@@ -48,14 +45,14 @@ public class ProfileView extends VerticalLayout {
         profileEmail.addClassName("profile-email");
         profileEmail.getElement().setAttribute("style", font);
 
-        Paragraph profilePhone = new Paragraph("Phone Number:  "+ profile.getPhone());
+        Paragraph profilePhone = new Paragraph("Phone Number:  " + profile.getPhone());
         profilePhone.addClassName("profile-phone");
         profilePhone.getElement().setAttribute("style", font);
-        
+
         Paragraph profileID = new Paragraph("Profile ID: " + profile.getProfileId());
         profileID.addClassName("profile-id");
         profileID.getElement().setAttribute("style", font);
-        
+
         Paragraph profileRole = new Paragraph("Role: " + profile.getPermissionLevel().toString());
         profileRole.addClassName("profile-role");
         profileRole.getElement().setAttribute("style", font);
@@ -69,4 +66,11 @@ public class ProfileView extends VerticalLayout {
         return profileLayout;
     }
 
+    @Override
+    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+        // Check if user is logged in
+        if (!LoginManager.getInstance().isLoggedIn()) {
+            beforeEnterEvent.forwardTo("login");
+        }
+    }
 }

@@ -6,14 +6,15 @@ import com.tshirts.sandstone.vaadin.util.Profile;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class ProfileManager implements Closeable {
+    static ArrayList<Profile> profiles;
     private static ProfileManager instance = null;
-    ArrayList<Profile> profiles = new ArrayList<>();
 
 
     private ProfileManager() {
-        this.profiles = new ArrayList<>(List.of(readFromFile()));
+        profiles = new ArrayList<>(List.of(readFromFile()));
     }
 
     public static ProfileManager getInstance() {
@@ -21,6 +22,26 @@ public class ProfileManager implements Closeable {
             instance = new ProfileManager();
         }
         return instance;
+    }
+
+    public static Profile[] findBy(String type, String value) {
+        Stream<Profile> profileStream = profiles.stream();
+        return switch (type) {
+            case "username" ->
+                    profileStream.filter(profile -> profile.getUsername().contains(value)).toArray(Profile[]::new);
+            case "email" -> profileStream.filter(profile -> profile.getEmail().contains(value)).toArray(Profile[]::new);
+            case "id" ->
+                    profileStream.filter(profile -> String.valueOf(profile.getProfileId()).contains(value)).toArray(Profile[]::new);
+            case "firstName" ->
+                    profileStream.filter(profile -> profile.getFirstName().contains(value)).toArray(Profile[]::new);
+            case "lastName" ->
+                    profileStream.filter(profile -> profile.getLastName().contains(value)).toArray(Profile[]::new);
+            case "phoneNumber" ->
+                    profileStream.filter(profile -> profile.getPhone().contains(value)).toArray(Profile[]::new);
+            case "permissionLevel" ->
+                    profileStream.filter(profile -> profile.getPermissionLevel().toString().contains(value)).toArray(Profile[]::new);
+            default -> null;
+        };
     }
 
     public boolean writeToFile() {
@@ -91,7 +112,7 @@ public class ProfileManager implements Closeable {
 
     public Profile getProfile(String usernameOrEmail, String password) {
         for (Profile profile : profiles) {
-            if ((profile.getUsername().equals(usernameOrEmail)  || profile.getEmail().equals(usernameOrEmail)) && profile.getPassword().equals(password)) {
+            if ((profile.getUsername().equals(usernameOrEmail) || profile.getEmail().equals(usernameOrEmail)) && profile.getPassword().equals(password)) {
                 return profile;
             }
         }
@@ -101,7 +122,6 @@ public class ProfileManager implements Closeable {
     public ArrayList<Profile> getProfiles() {
         return profiles;
     }
-
 
 
     @Override

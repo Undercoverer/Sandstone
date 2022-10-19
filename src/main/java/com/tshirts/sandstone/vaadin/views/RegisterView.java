@@ -12,12 +12,14 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 
 import java.util.Objects;
 
-@Route(value = "register", registerAtStartup = true)
-public class RegisterView extends VerticalLayout {
+@Route(value = "register")
+public class RegisterView extends VerticalLayout implements BeforeEnterObserver {
     public RegisterView() {
         VerticalLayout registrationForm = generateRegistrationForm();
         this.add(registrationForm);
@@ -133,5 +135,12 @@ public class RegisterView extends VerticalLayout {
         form.add(fullName, email, username, password, phoneNumber, register);
         registrationForm.add(form);
         return registrationForm;
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+        if (LoginManager.getInstance().isLoggedIn()) {
+            beforeEnterEvent.forwardTo("");
+        }
     }
 }

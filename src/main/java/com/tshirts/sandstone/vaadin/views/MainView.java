@@ -5,7 +5,6 @@ package com.tshirts.sandstone.vaadin.views;
 import com.tshirts.sandstone.vaadin.ProductDetails;
 import com.tshirts.sandstone.vaadin.ProductList;
 import com.tshirts.sandstone.vaadin.managers.LoginManager;
-import com.tshirts.sandstone.vaadin.managers.ProfileManager;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -15,11 +14,13 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 
 @Route("")
 //@CssImport("./styles/shared-styles.css")
-public class MainView extends VerticalLayout {
+public class MainView extends VerticalLayout implements BeforeEnterObserver {
 
     /**
      * The main page of the website. It contains a menu bar on top, a resizable horizontal layout in the middle and a footer at the bottom.
@@ -29,13 +30,6 @@ public class MainView extends VerticalLayout {
      */
     public MainView() {
         LoginManager loginManager = LoginManager.getInstance();
-        ProfileManager profileManager = ProfileManager.getInstance();
-
-        if (!loginManager.isLoggedIn()) {
-            // Navigate to login page
-            UI.getCurrent().navigate("login");
-            UI.getCurrent().getPage().reload();
-        }
         this.getStyle().set("overflow", "hidden");
         addClassName("main-view");
         add(generateMenuBar());
@@ -134,5 +128,14 @@ public class MainView extends VerticalLayout {
         footer.setJustifyContentMode(JustifyContentMode.CENTER);
         footer.add(new Text("T-Shirts Sandstone"));
         return footer;
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+        if (!LoginManager.getInstance().isLoggedIn()) {
+            beforeEnterEvent.forwardTo("login");
+        } else if (LoginManager.getInstance().isLoggedIn() && beforeEnterEvent.getLocation().getPath().equals("login")) {
+            beforeEnterEvent.forwardTo("");
+        }
     }
 }
