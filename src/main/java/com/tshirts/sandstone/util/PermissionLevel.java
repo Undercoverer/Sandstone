@@ -1,4 +1,4 @@
-package com.tshirts.sandstone.vaadin.util;
+package com.tshirts.sandstone.util;
 
 public enum PermissionLevel {
     GUEST,

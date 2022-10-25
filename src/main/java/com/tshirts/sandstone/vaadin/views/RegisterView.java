@@ -1,9 +1,9 @@
 package com.tshirts.sandstone.vaadin.views;
 
-import com.tshirts.sandstone.vaadin.managers.LoginManager;
-import com.tshirts.sandstone.vaadin.managers.ProfileManager;
-import com.tshirts.sandstone.vaadin.util.PermissionLevel;
-import com.tshirts.sandstone.vaadin.util.Profile;
+import com.tshirts.sandstone.util.PermissionLevel;
+import com.tshirts.sandstone.util.Profile;
+import com.tshirts.sandstone.util.managers.LoginManager;
+import com.tshirts.sandstone.util.managers.ProfileManager;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -121,7 +121,7 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
                     // Create new account
                     String[] name = fullName.getValue().split(" ");
                     Profile profile = new Profile(username.getValue(), name[0], name[1], email.getValue(), phoneNumber.getValue(), password.getValue(), Objects.hashCode(username), PermissionLevel.USER);
-                    ProfileManager.getInstance().addProfile(profile);
+                    ProfileManager.getInstance().add(profile);
                     LoginManager.getInstance().setLoggedIn(true, profile);
                     // Navigate to main page
                     email.setInvalid(false);

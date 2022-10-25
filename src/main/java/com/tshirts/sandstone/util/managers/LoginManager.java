@@ -1,6 +1,6 @@
-package com.tshirts.sandstone.vaadin.managers;
+package com.tshirts.sandstone.util.managers;
 
-import com.tshirts.sandstone.vaadin.util.Profile;
+import com.tshirts.sandstone.util.Profile;
 
 public class LoginManager {
     private static LoginManager instance = null;
@@ -9,7 +9,6 @@ public class LoginManager {
     private Profile loggedInUser = null;
 
     private LoginManager() {
-
     }
 
     public static LoginManager getInstance() {

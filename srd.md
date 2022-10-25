@@ -320,3 +320,13 @@ storehouse items as well as their stock's price, sales, profit, and supply.
 ## Appendix
 
 ### 1. [Use Case Model](usecasemodel.md)
+
+### 2. [Software Architecture](https://raw.githubusercontent.com/Undercoverer/Sandstone/master/Use%20Case%20Diagram.png)
+
+### 3. State Machine Diagrams
+#### [Guest](https://raw.githubusercontent.com/Undercoverer/Sandstone/master/State%20Machine%20Diagram%20Guests.png)
+#### [User](https://raw.githubusercontent.com/Undercoverer/Sandstone/master/State%20Machine%20Diagram%20Users.png)
+#### [Manager](https://raw.githubusercontent.com/Undercoverer/Sandstone/master/State%20Machine%20Diagram%20Managers.png)
+#### [Admin](https://raw.githubusercontent.com/Undercoverer/Sandstone/master/State%20Machine%20Diagram%20Administrators.png)
+
+### 4. [UML Class Diagrams](https://raw.githubusercontent.com/Undercoverer/Sandstone/master/UML.png)

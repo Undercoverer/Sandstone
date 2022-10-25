@@ -2,10 +2,10 @@ package com.tshirts.sandstone.vaadin.views;
 
 // A Main view that is the application made with vaadin
 
-import com.tshirts.sandstone.vaadin.ProductDetails;
-import com.tshirts.sandstone.vaadin.ProductList;
-import com.tshirts.sandstone.vaadin.managers.LoginManager;
-import com.tshirts.sandstone.vaadin.util.Profile;
+import com.tshirts.sandstone.util.PermissionLevel;
+import com.tshirts.sandstone.util.Profile;
+import com.tshirts.sandstone.util.managers.LoginManager;
+import com.tshirts.sandstone.util.managers.ProductManager;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -16,9 +16,15 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
+import com.vaadin.flow.component.upload.Receiver;
+import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 @Route("")
 //@CssImport("./styles/shared-styles.css")
@@ -71,44 +77,59 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         Button home = new Button(new Icon(VaadinIcon.HOME));
         navigationButtons.add(home);
 
-        Button about = new Button(new Icon(VaadinIcon.INFO_CIRCLE));
-        about.addClickListener(e -> {
+        Button Users = new Button(new Icon(VaadinIcon.INFO_CIRCLE));
+        Users.setText("Users");
+        Users.addClickListener(e -> {
             UI.getCurrent().navigate("users");
         });
-        navigationButtons.add(about);
+        navigationButtons.add(Users);
 
         Button cart = new Button(new Icon(VaadinIcon.CART));
+        cart.setText("Import File");
+        cart.addClickListener(e -> {
+            Dialog dialog = new Dialog();
+            dialog.setWidth("400px");
+            dialog.setHeight("200px");
+            dialog.setCloseOnEsc(true);
+            dialog.setCloseOnOutsideClick(true);
+            dialog.add(new Text("Import File"));
+
+            Upload upload = new Upload();
+            upload.setAcceptedFileTypes("application/json");
+            upload.setDropAllowed(true);
+            upload.setReceiver((Receiver) (filename, mimeType) -> {
+                FileOutputStream fos;
+                // Save in resources/uploads
+                File file = new File("src/main/resources/uploads/" + filename);
+                try {
+                    file.createNewFile();
+                    return new FileOutputStream(file);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+            });
+            upload.addSucceededListener(event -> dialog.add(ProductManager.getInstance().import_(new File("src/main/resources/uploads/" + event.getFileName()))
+                    ? new Text("File imported successfully")
+                    : new Text("File import failed")));
+        });
         navigationButtons.add(cart);
 
         Button login = new Button(new Icon(VaadinIcon.USER));
-        login.addClickListener(e -> {
-            if (LoginManager.getInstance().isLoggedIn()) {
+        if (LoginManager.getInstance().isLoggedIn()) {
+            login.setText("Profile");
+            login.addClickListener(e -> {
                 // Create dialog to display profile information and a logout button
-                Dialog dialog = new Dialog();
-                dialog.getElement().getStyle().set("font-size", "18px");
-
-                dialog.add(new Paragraph("Profile information"));
-                Profile loggedInUser = LoginManager.getInstance().getLoggedInUser();
-                dialog.add(new Paragraph("Name: %s %s".formatted(loggedInUser.getFirstName(), loggedInUser.getLastName())));
-                dialog.add(new Paragraph("Email: %s".formatted(loggedInUser.getEmail())));
-                dialog.add(new Paragraph("Phone number: %s".formatted(loggedInUser.getPhone())));
-                dialog.add(new Paragraph("Profile Id: %s".formatted(loggedInUser.getProfileId())));
-                dialog.add(new Paragraph("Permissions: %s".formatted(loggedInUser.getPermissionLevel())));
-
-                Button logout = new Button("Logout");
-                logout.addClickListener(event -> {
-                    LoginManager.getInstance().setLoggedIn(false, null);
-                    dialog.close();
-                    // Wait for the dialog to close before navigating to the login page
-                    UI.getCurrent().getPage().executeJs("setTimeout(() => { window.location.replace('/login'); }, 100);");
-                });
-
-                dialog.add(logout);
+                Dialog dialog = createProfileDialog();
                 dialog.open();
-            } else {
+            });
+        } else {
+            login.setText("Login");
+            login.addClickListener(e -> {
                 UI.getCurrent().navigate("login");
-            }
-        });
+            });
+        }
+
         navigationButtons.add(login);
 
         menuBar.add(navigationButtons);
@@ -117,7 +138,32 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         return menuBar;
     }
 
-    public static String placeholderImageURL(int width, int height, String backColor, String textColor, String text) {
+    private static Dialog createProfileDialog() {
+        Dialog dialog = new Dialog();
+        dialog.getElement().getStyle().set("font-size", "18px");
+
+        dialog.add(new Paragraph("Profile information"));
+        Profile loggedInUser = LoginManager.getInstance().getLoggedInUser();
+        dialog.add(new Paragraph("Name: %s %s".formatted(loggedInUser.getFirstName(), loggedInUser.getLastName())));
+        dialog.add(new Paragraph("Email: %s".formatted(loggedInUser.getEmail())));
+        dialog.add(new Paragraph("Phone number: %s".formatted(loggedInUser.getPhone())));
+        dialog.add(new Paragraph("Profile Id: %s".formatted(loggedInUser.getProfileId())));
+        dialog.add(new Paragraph("Permissions: %s".formatted(loggedInUser.getPermissionLevel())));
+
+        Button logout = new Button("Logout");
+        logout.addClickListener(event -> {
+            LoginManager.getInstance().setLoggedIn(false, null);
+            dialog.close();
+            // Wait for the dialog to close before navigating to the login page
+            UI.getCurrent().getPage().executeJs("setTimeout(() => { window.location.replace('/login'); }, 100);");
+        });
+
+        dialog.add(logout);
+        return dialog;
+    }
+
+    public static String placeholderImageURL(int width, int height, String backColor, String textColor, String
+            text) {
         return "https://via.placeholder.com/" + ((width == height) ? width : width + "x" + height) + "/" + backColor + "/" + textColor + "?text=" + text;
     }
 
@@ -132,8 +178,8 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         mainContent.setOrientation(SplitLayout.Orientation.HORIZONTAL);
         mainContent.setSplitterPosition(100);
         mainContent.getStyle().set("overflow", "hidden");
-        mainContent.addToPrimary(new ProductList("src/main/resources/products.json"));
-        mainContent.addToSecondary(new ProductDetails());
+//        mainContent.addToPrimary(new ProductList());
+
         return mainContent;
     }
 
@@ -157,8 +203,8 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         if (!LoginManager.getInstance().isLoggedIn()) {
             beforeEnterEvent.forwardTo("login");
-        } else if (LoginManager.getInstance().isLoggedIn() && beforeEnterEvent.getLocation().getPath().equals("login")) {
-            beforeEnterEvent.forwardTo("");
+        } else if (LoginManager.getInstance().getLoggedInUser().getPermissionLevel() == PermissionLevel.GUEST) {
+            beforeEnterEvent.forwardTo("guest");
         }
     }
 }

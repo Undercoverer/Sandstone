@@ -1,8 +1,8 @@
 package com.tshirts.sandstone.vaadin.views;
 
-import com.tshirts.sandstone.vaadin.managers.LoginManager;
-import com.tshirts.sandstone.vaadin.managers.ProfileManager;
-import com.tshirts.sandstone.vaadin.util.Profile;
+import com.tshirts.sandstone.util.Profile;
+import com.tshirts.sandstone.util.managers.LoginManager;
+import com.tshirts.sandstone.util.managers.ProfileManager;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;

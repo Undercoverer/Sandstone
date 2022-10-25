@@ -1,16 +1,37 @@
-package com.tshirts.sandstone.vaadin.util;
+package com.tshirts.sandstone.util;
 
-import com.google.gson.Gson;
+
+import com.tshirts.sandstone.util.annotations.H2FieldData;
 
 public class Profile {
-    public String username;
+    @H2FieldData(primaryKey = true, notNull = true)
+    private String username;
+
+    @H2FieldData(notNull = true)
     private String firstName;
+    @H2FieldData(notNull = true)
     private String lastName;
+    @H2FieldData(notNull = true)
     private String email;
+    @H2FieldData(notNull = true)
     private String phone;
-    private String password; // ;)
+    @H2FieldData(notNull = true)
+    private int password;
+    @H2FieldData(notNull = true, autoIncrement = true)
     private int profileId;
+    @H2FieldData(notNull = true)
     private PermissionLevel permissionLevel;
+
+    public Profile(String username, String firstName, String lastName, String email, String phone, String password, int profileId, PermissionLevel permissionLevel) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone.replaceAll("[^0-9]", "");
+        this.password = password.hashCode();
+        this.profileId = profileId;
+        this.permissionLevel = permissionLevel;
+    }
 
     public String getUsername() {
         return username;
@@ -18,35 +39,6 @@ public class Profile {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    private Profile(String json) {
-        Gson gson = new Gson();
-        Profile profile = gson.fromJson(json, Profile.class);
-        this.username = profile.username;
-        this.firstName = profile.firstName;
-        this.lastName = profile.lastName;
-        this.email = profile.email;
-        this.phone = profile.phone;
-        this.password = profile.password;
-        this.profileId = profile.profileId;
-        this.permissionLevel = profile.permissionLevel;
-    }
-
-    public Profile(String email, String password){
-        this.email = email;
-        this.password = password;
-    }
-
-    public Profile(String username, String firstName, String lastName, String email, String phone, String password, int profileId, PermissionLevel permissionLevel) {
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
-        this.password = password.hashCode() + "";
-        this.profileId = profileId;
-        this.permissionLevel = permissionLevel;
     }
 
     public String getFirstName() {
@@ -78,15 +70,15 @@ public class Profile {
     }
 
     public void setPhone(String phone) {
-        this.phone = phone;
+        this.phone = phone.replaceAll("[^0-9]", "");
     }
 
-    public String getPassword() {
+    public int getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
-        this.password = password.hashCode() + "";
+        this.password = password.hashCode();
     }
 
     public int getProfileId() {

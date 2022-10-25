@@ -1,8 +1,8 @@
-package com.tshirts.sandstone;
+package com.tshirts.sandstone.datagen;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.tshirts.sandstone.vaadin.Product;
+import com.tshirts.sandstone.util.Product;
 
 import java.io.FileWriter;
 

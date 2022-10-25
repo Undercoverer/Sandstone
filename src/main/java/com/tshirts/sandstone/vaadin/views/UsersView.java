@@ -27,7 +27,7 @@ import com.vaadin.flow.router.Route;
 /**
  * A list of users displayed in a table.
  * Each row in the table represents one user.
- * The table has 4 columns: First Name, Last Name, Email and Role.
+ * The table has 7 columns: First Name, Last Name, Username, Email, Phone, ProfileID and Role.
  * <p>
  * The only users who can access this page are the admins and the managers, and admins can
  * modify the users' information. Admins can only modify the users' role
