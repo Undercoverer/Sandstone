@@ -1,9 +1,16 @@
 package com.tshirts.sandstone.util;
 
+import com.tshirts.sandstone.util.annotations.H2FieldData;
+
 public class Product {
+
+    @H2FieldData(primaryKey = true, notNull = true)
     public String name;
+    @H2FieldData(notNull = true)
     public String description;
+    @H2FieldData(notNull = true)
     public double price;
+    @H2FieldData(notNull = true)
     public String image;
 
     public Product(String name, String description, double price, String image) {
@@ -11,6 +18,9 @@ public class Product {
         this.description = description;
         this.price = price;
         this.image = image;
+    }
+
+    public Product() {
     }
 
     @Override

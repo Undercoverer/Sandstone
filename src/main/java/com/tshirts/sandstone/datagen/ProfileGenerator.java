@@ -23,11 +23,7 @@ public class ProfileGenerator {
             generateProfiles();
         } else {
             System.out.println("Profiles already exist");
-            for (Profile profile : all) {
-                if (!profile.getUsername().equals("username0")) {
-                    Util.DB.delete(profile);
-                }
-            }
+            Util.DB.dropTable(Profile.class);
             generateProfiles();
         }
 
@@ -36,7 +32,7 @@ public class ProfileGenerator {
 
     private static void generateProfiles() {
         System.out.println("Generating profiles");
-        int count = 500;
+        int count = 50;
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         ArrayList<Profile> profiles = new ArrayList<>();
 

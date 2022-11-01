@@ -1,13 +1,15 @@
 package com.tshirts.sandstone.util;
 
-import org.springframework.util.ReflectionUtils;
+import com.tshirts.sandstone.util.annotations.H2FieldData;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.function.Consumer;
 
 /**
  * This class is used to access the H2 database
@@ -18,7 +20,6 @@ public class DatabaseAccess implements AutoCloseable {
     final String DB_URL = "jdbc:h2:file:./src/main/resources/data";
     final String USER = "username";
     final String PASS = "password";
-    boolean debug = true;
     private Connection conn = null;
 
     public DatabaseAccess() {
@@ -57,17 +58,14 @@ public class DatabaseAccess implements AutoCloseable {
         StringBuilder sql = new StringBuilder("INSERT INTO " + tableName + " VALUES (");
         Field[] fields = item.getClass().getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
-            fields[i].setAccessible(true);
-            appendTypeAndData(item, sql, fields[i]);
+            Util.setAccessible(fields[i]);
+            appendTypeAndData(item, sql, fields[i], false);
             if (i != fields.length - 1) {
                 sql.append(", ");
             }
         }
         sql.append(")");
 
-        if (debug) {
-            System.out.println(sql);
-        }
         try {
             conn.createStatement().execute(sql.toString());
         } catch (SQLException e) {
@@ -84,32 +82,117 @@ public class DatabaseAccess implements AutoCloseable {
         }
         Field[] fields = type.getDeclaredFields();
         for (Field field : fields) {
-            // Print all info about the field
-            if (debug) {
-                System.out.printf("Name: %s, Type: %s\n", field.getName(), field.getType());
-            }
-//            ReflectionUtils.makeAccessible(field);
+            field.setAccessible(true);
         }
         StringBuilder sql = new StringBuilder("CREATE TABLE " + getTableName(type) + " (");
 
         for (int i = 0; i < fields.length; i++) {
             Field field = fields[i];
             sql.append(field.getName()).append(" ");
-            sql.append(Util.javaTypeToH2(field.getType()));
+            sql.append(Util.javaTypeToH2(field));
+            String[] modifiers = Arrays.stream(field.getAnnotations())
+                    .filter(annotation -> annotation.annotationType().getSimpleName().equals("H2FieldData"))
+                    .map(annotation -> (H2FieldData) annotation)
+                    .mapMulti((H2FieldData annotation, Consumer<? super String> out) -> {
+                        if (annotation.primaryKey()) {
+                            out.accept("PRIMARY KEY");
+                        }
+                        if (annotation.notNull()) {
+                            out.accept("NOT NULL");
+                        }
+                        if (annotation.autoIncrement()) {
+                            out.accept("AUTO_INCREMENT");
+                        }
+                    }).toArray(String[]::new);
+            sql.append(" ").append(String.join(" ", modifiers));
             if (i < fields.length - 1) {
                 sql.append(", ");
             }
         }
         sql.append(")");
 
-        if (debug) {
-            System.out.println(sql);
-        }
         try {
             conn.createStatement().execute(sql.toString());
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+        return true;
+    }
+
+    public <T> boolean dropTable(Class<T> type) {
+        if (!tableExists(type)) {
+            return false;
+        }
+        String tableName = getTableName(type);
+        String sql = "DROP TABLE " + tableName;
+        try {
+            conn.createStatement().execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public <T> boolean delete(T item) {
+        if (item == null || !tableExists(item.getClass())) {
+            return false;
+        } else if (!itemExists(item)) {
+            return false;
+        }
+        String tableName = getTableName(item);
+        StringBuilder sql = new StringBuilder("DELETE FROM " + tableName);
+        h2WhereBuilder(item, sql);
+        try {
+            conn.createStatement().execute(sql.toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    private <T> void h2WhereBuilder(T item, StringBuilder sql) {
+        Field[] fields = item.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+        }
+        sql.append(" WHERE ");
+        for (int i = 0; i < fields.length; i++) {
+            appendTypeAndData(item, sql, fields[i], true);
+            if (i != fields.length - 1) {
+                sql.append(" AND ");
+            }
+        }
+        sql.append(";");
+    }
+
+    private <T> void appendTypeAndData(T item, StringBuilder sql, Field field, boolean includeFieldName) {
+        try {
+            Object obj = field.get(item);
+            System.out.printf("Field: %s, Type: %s, Value: %s%n", field.getName(), field.getType(), obj);
+            if (includeFieldName) {
+                sql.append(field.getName()).append(" = ");
+            }
+            if (field.getType().equals(String.class) || Util.isEnum(field.getType())) {
+                sql.append("'").append(obj).append("'");
+            } else {
+                sql.append(obj);
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public <T> boolean addAll(Collection<T> items) {
+        for (T item : items) {
+            if (itemExists(item)) {
+                return false;
+            }
+        }
+        for (T item : items) {
+            add(item);
         }
         return true;
     }
@@ -121,9 +204,6 @@ public class DatabaseAccess implements AutoCloseable {
         String tableName = getTableName(type);
         String sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '" + tableName + "';";
 
-        if (debug) {
-            System.out.println(sql);
-        }
         try {
             ResultSet resultSet = conn.createStatement().executeQuery(sql);
             return resultSet.next();
@@ -149,8 +229,19 @@ public class DatabaseAccess implements AutoCloseable {
     }
 
     public <T> Collection<T> getAll(Class<T> type) {
-        // TODO Implement
-        return null;
+        if (type == null || !tableExists(type)) {
+            return null;
+        }
+        String tableName = getTableName(type);
+        // Return a collection of all items in the table
+        String sql = "SELECT * FROM " + tableName;
+        try {
+            ResultSet resultSet = conn.createStatement().executeQuery(sql);
+            return Util.resultSetToCollection(resultSet, type);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public <T, U> T get(Class<T> clazz, String type, U val) {
@@ -166,62 +257,5 @@ public class DatabaseAccess implements AutoCloseable {
     public <T, U> boolean update(T item, String type, U val) {
         // TODO Implement
         return false;
-    }
-
-    public <T> boolean delete(T item) {
-        if (item == null || !tableExists(item.getClass())) {
-            return false;
-        } else if (!itemExists(item)) {
-            return false;
-        }
-        String tableName = getTableName(item);
-        StringBuilder sql = new StringBuilder("DELETE FROM " + tableName);
-        h2WhereBuilder(item, sql);
-        try {
-            conn.createStatement().execute(sql.toString());
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    private <T> void h2WhereBuilder(T item, StringBuilder sql) {
-        Field[] fields = item.getClass().getDeclaredFields();
-        sql.append(" WHERE ");
-        for (int i = 0; i < fields.length; i++) {
-            ReflectionUtils.makeAccessible(fields[i]);
-            appendTypeAndData(item, sql, fields[i]);
-            if (i != fields.length - 1) {
-                sql.append(" AND ");
-            }
-        }
-        sql.append(";");
-    }
-
-    private <T> void appendTypeAndData(T item, StringBuilder sql, Field field) {
-        try {
-            Object obj = field.get(item);
-            sql.append(field.getName()).append(" = ");
-            if (field.getType().equals(String.class) || Util.isEnum(field.getClass())) {
-                sql.append("'").append(obj).append("'");
-            } else {
-                sql.append(obj);
-            }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public <T> boolean addAll(Collection<T> items) {
-        for (T item : items) {
-            if (itemExists(item)) {
-                return false;
-            }
-        }
-        for (T item : items) {
-            add(item);
-        }
-        return true;
     }
 }

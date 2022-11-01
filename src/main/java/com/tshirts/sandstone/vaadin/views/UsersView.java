@@ -2,10 +2,11 @@ package com.tshirts.sandstone.vaadin.views;
 
 // A User view that is the application made with vaadin
 
-import com.tshirts.sandstone.vaadin.managers.LoginManager;
-import com.tshirts.sandstone.vaadin.managers.ProfileManager;
-import com.tshirts.sandstone.vaadin.util.PermissionLevel;
-import com.tshirts.sandstone.vaadin.util.Profile;
+
+import com.tshirts.sandstone.util.PermissionLevel;
+import com.tshirts.sandstone.util.Profile;
+import com.tshirts.sandstone.util.managers.LoginManager;
+import com.tshirts.sandstone.util.managers.ProfileManager;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -33,13 +34,13 @@ import com.vaadin.flow.router.Route;
  * modify the users' information. Admins can only modify the users' role
  */
 @Route("users")
-public class UserView extends VerticalLayout implements BeforeEnterObserver {
+public class UsersView extends VerticalLayout implements BeforeEnterObserver {
     Grid<Profile> grid = new Grid<>(Profile.class);
     TextField filterText = new TextField();
     ComboBox<String> filterColumn = new ComboBox<>();
 
 
-    public UserView() {
+    public UsersView() {
         addClassName("html-table");
         setSizeFull();
         configureGrid();
@@ -53,7 +54,7 @@ public class UserView extends VerticalLayout implements BeforeEnterObserver {
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
 
-        grid.setItems(ProfileManager.getInstance().getProfiles());
+        grid.setItems(ProfileManager.getInstance().getAll());
 
         GridContextMenu<Profile> profileGridContextMenu = grid.addContextMenu();
         profileGridContextMenu.addItem("Delete", event -> {
@@ -68,6 +69,7 @@ public class UserView extends VerticalLayout implements BeforeEnterObserver {
                 form.setAlignItems(Alignment.CENTER);
                 form.setJustifyContentMode(JustifyContentMode.CENTER);
                 form.setPadding(true);
+                dialog.add(form);
 
 
                 Label label = new Label("Are you sure you want to delete this user?");
@@ -91,9 +93,9 @@ public class UserView extends VerticalLayout implements BeforeEnterObserver {
                         return;
                     }
                     // Delete the user
-                    ProfileManager.getInstance().removeProfile(event.getItem().get());
+                    ProfileManager.getInstance().remove(event.getItem().get());
                     // Refresh the table
-                    grid.setItems(ProfileManager.getInstance().getProfiles());
+                    grid.setItems(ProfileManager.getInstance().getAll());
                     updateList();
                     dialog.close();
                 });
@@ -105,7 +107,6 @@ public class UserView extends VerticalLayout implements BeforeEnterObserver {
 
                 buttons.add(delete, cancel);
                 form.add(label, confirmation, buttons);
-                dialog.add(form);
                 dialog.open();
             }
         });
@@ -192,7 +193,7 @@ public class UserView extends VerticalLayout implements BeforeEnterObserver {
 //                    ProfileManager.getInstance().removeProfile(profile);
 //                    ProfileManager.getInstance().addProfile(profile);
                     // Refresh the table
-                    grid.setItems(ProfileManager.getInstance().getProfiles());
+                    grid.setItems(ProfileManager.getInstance().getAll());
                     dialog.close();
                 });
 
@@ -261,7 +262,7 @@ public class UserView extends VerticalLayout implements BeforeEnterObserver {
                     // Update the user's information
                     profile.setPassword(password.getValue());
                     // Refresh the table
-                    grid.setItems(ProfileManager.getInstance().getProfiles());
+                    grid.setItems(ProfileManager.getInstance().getAll());
                     dialog.close();
                 });
 
@@ -315,19 +316,19 @@ public class UserView extends VerticalLayout implements BeforeEnterObserver {
     private void updateList() {
         if (filterColumn.getValue() != null && filterText.getValue() != null) {
             switch (filterColumn.getValue()) {
-                case "First Name" -> grid.setItems(ProfileManager.findBy("firstName", filterText.getValue()));
-                case "Last Name" -> grid.setItems(ProfileManager.findBy("lastName", filterText.getValue()));
-                case "Username" -> grid.setItems(ProfileManager.findBy("username", filterText.getValue()));
-                case "Email" -> grid.setItems(ProfileManager.findBy("email", filterText.getValue()));
-                case "Phone Number" -> grid.setItems(ProfileManager.findBy("phoneNumber", filterText.getValue()));
-                case "Profile ID" -> grid.setItems(ProfileManager.findBy("profileId", filterText.getValue()));
+                case "First Name" -> grid.setItems(ProfileManager.getInstance().findBy("firstName", filterText.getValue()));
+                case "Last Name" -> grid.setItems(ProfileManager.getInstance().findBy("lastName", filterText.getValue()));
+                case "Username" -> grid.setItems(ProfileManager.getInstance().findBy("username", filterText.getValue()));
+                case "Email" -> grid.setItems(ProfileManager.getInstance().findBy("email", filterText.getValue()));
+                case "Phone Number" -> grid.setItems(ProfileManager.getInstance().findBy("phoneNumber", filterText.getValue()));
+                case "Profile ID" -> grid.setItems(ProfileManager.getInstance().findBy("profileId", filterText.getValue()));
                 case "Permission Level" ->
-                        grid.setItems(ProfileManager.findBy("permissionLevel", filterText.getValue()));
+                        grid.setItems(ProfileManager.getInstance().findBy("permissionLevel", filterText.getValue()));
                 default -> {
                 }
             }
         } else {
-            grid.setItems(ProfileManager.getInstance().getProfiles());
+            grid.setItems(ProfileManager.getInstance().getAll());
         }
     }
 

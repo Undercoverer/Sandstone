@@ -127,7 +127,7 @@ public class ProfileManager implements IManager<Profile> {
         if (profile == null) {
             profile = Util.DB.get(Profile.class,"email", usernameOrEmail);
         }
-        if (profile != null && profile.getPassword() == password.hashCode()) {
+        if (profile != null && profile.getHashedPassword() == password.hashCode()) {
             return profile;
         }
         return null;

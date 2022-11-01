@@ -1,8 +1,6 @@
 package com.tshirts.sandstone.util;
 
-
 import com.tshirts.sandstone.util.annotations.H2FieldData;
-
 public class Profile {
     @H2FieldData(primaryKey = true, notNull = true)
     private String username;
@@ -16,8 +14,8 @@ public class Profile {
     @H2FieldData(notNull = true)
     private String phone;
     @H2FieldData(notNull = true)
-    private int password;
-    @H2FieldData(notNull = true, autoIncrement = true)
+    private int hashedPassword;
+    @H2FieldData(notNull = true)
     private int profileId;
     @H2FieldData(notNull = true)
     private PermissionLevel permissionLevel;
@@ -28,14 +26,17 @@ public class Profile {
         this.lastName = lastName;
         this.email = email;
         this.phone = phone.replaceAll("[^0-9]", "");
-        this.password = password.hashCode();
+        this.hashedPassword = password.hashCode();
         this.profileId = profileId;
         this.permissionLevel = permissionLevel;
     }
 
+    public Profile() {
+    }
     public String getUsername() {
         return username;
     }
+
 
     public void setUsername(String username) {
         this.username = username;
@@ -73,12 +74,12 @@ public class Profile {
         this.phone = phone.replaceAll("[^0-9]", "");
     }
 
-    public int getPassword() {
-        return password;
+    public int getHashedPassword() {
+        return hashedPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password.hashCode();
+    public void setPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword.hashCode();
     }
 
     public int getProfileId() {
@@ -95,5 +96,19 @@ public class Profile {
 
     public void setPermissionLevel(PermissionLevel permissionLevel) {
         this.permissionLevel = permissionLevel;
+    }
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", hashedPassword=" + hashedPassword +
+                ", profileId=" + profileId +
+                ", permissionLevel=" + permissionLevel +
+                '}';
     }
 }
