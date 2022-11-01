@@ -244,9 +244,30 @@ public class DatabaseAccess implements AutoCloseable {
         }
     }
 
-    public <T, U> T get(Class<T> clazz, String type, U val) {
-        // TODO Implement
-        return null;
+    public <T, U> T get(Class<T> clazz, String field, U val) {
+        if (clazz == null || !tableExists(clazz)) {
+            return null;
+        }
+        String tableName = getTableName(clazz);
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT * FROM ").append(tableName).append(" WHERE ").append(field).append(" = ");
+        Arrays.stream(clazz.getDeclaredFields()).
+                filter(f -> f.getName().equals(field))
+                .findFirst().ifPresent(f -> {
+            if (f.getType().equals(String.class) || Util.isEnum(f.getType())) {
+                sql.append("'").append(val).append("'");
+            } else {
+                sql.append(val);
+            }
+        });
+        sql.append(";");
+        try {
+            ResultSet resultSet = conn.createStatement().executeQuery(sql.toString());
+            return Util.resultSetToCollection(resultSet, clazz).stream().findFirst().orElse(null);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
