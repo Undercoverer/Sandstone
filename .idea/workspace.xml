@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="be07d627-c0db-4a5f-9cc5-290c80b9365c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/tshirts/sandstone/datagen/ProductGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tshirts/sandstone/util/managers/ProductManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tshirts/sandstone/util/managers/ProductManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tshirts/sandstone/vaadin/components/ProductList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tshirts/sandstone/vaadin/components/ProductList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tshirts/sandstone/vaadin/views/MainView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tshirts/sandstone/vaadin/views/MainView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,6 +55,9 @@
   }
 }</component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\bmbga\Documents\workspace\Sandstone\src" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.tshirts.sandstone.datagen" />
     </key>
