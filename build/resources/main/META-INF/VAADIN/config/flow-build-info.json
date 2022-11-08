@@ -1,0 +1,18 @@
+{
+  "productionMode": false,
+  "useDeprecatedV14Bootstrapping": false,
+  "eagerServerLoad": false,
+  "npmFolder": "C:\\Users\\bmbga\\Documents\\workspace\\Sandstone",
+  "node.version": "v16.17.0",
+  "node.download.root": "https://nodejs.org/dist/",
+  "generatedFolder": "C:\\Users\\bmbga\\Documents\\workspace\\Sandstone\\build\\frontend",
+  "frontendFolder": "C:\\Users\\bmbga\\Documents\\workspace\\Sandstone\\frontend",
+  "connect.javaSourceFolder": "C:\\Users\\bmbga\\Documents\\workspace\\Sandstone\\src\\main\\java",
+  "javaResourceFolder": "C:\\Users\\bmbga\\Documents\\workspace\\Sandstone\\src\\main\\resources",
+  "connect.applicationProperties": "C:\\Users\\bmbga\\Documents\\workspace\\Sandstone\\src\\main\\resources\\application.properties",
+  "connect.openApiFile": "C:\\Users\\bmbga\\Documents\\workspace\\Sandstone\\build\\generated-resources\\openapi.json",
+  "project.frontend.generated": "C:\\Users\\bmbga\\Documents\\workspace\\Sandstone\\frontend\\generated",
+  "pnpm.enable": false,
+  "require.home.node": false,
+  "build.folder": "build"
+}

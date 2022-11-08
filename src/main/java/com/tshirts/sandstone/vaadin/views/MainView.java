@@ -6,6 +6,7 @@ import com.tshirts.sandstone.util.PermissionLevel;
 import com.tshirts.sandstone.util.Profile;
 import com.tshirts.sandstone.util.managers.LoginManager;
 import com.tshirts.sandstone.util.managers.ProductManager;
+import com.tshirts.sandstone.vaadin.components.ProductList;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -176,9 +177,11 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
     private SplitLayout generateMainContent() {
         SplitLayout mainContent = new SplitLayout();
         mainContent.setOrientation(SplitLayout.Orientation.HORIZONTAL);
-        mainContent.setSplitterPosition(100);
+        mainContent.setSplitterPosition(150);
         mainContent.getStyle().set("overflow", "hidden");
-//        mainContent.addToPrimary(new ProductList());
+        mainContent.addToPrimary(new ProductList());
+
+        mainContent.addToSecondary(generateFooter());
 
         return mainContent;
     }

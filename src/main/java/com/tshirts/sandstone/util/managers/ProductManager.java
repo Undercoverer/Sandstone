@@ -80,7 +80,6 @@ public class ProductManager implements IManager<Product> {
         for (Product product : productArray) {
             add(product);
         }
-        ProductList.update();
         return true;
     }
 
@@ -95,7 +94,6 @@ public class ProductManager implements IManager<Product> {
         return Util.DB.delete(product);
     }
 
-    @Override
     public boolean update(Product product, String field, Object value) {
         try {
             Field f = product.getClass().getDeclaredField(field);

@@ -1,0 +1,14 @@
+{
+  "frontendFolder": "C:/Users/bmbga/Documents/workspace/Sandstone/frontend",
+  "themeFolder": "themes",
+  "themeResourceFolder": "C:/Users/bmbga/Documents/workspace/Sandstone/build/flow-frontend",
+  "staticOutput": "C:/Users/bmbga/Documents/workspace/Sandstone/build/classes/META-INF/VAADIN/webapp/VAADIN/static",
+  "generatedFolder": "generated",
+  "frontendBundleOutput": "C:\\Users\\bmbga\\Documents\\workspace\\Sandstone\\build\\classes\\META-INF\\VAADIN\\webapp",
+  "addonFrontendFolder": "build/flow-frontend/",
+  "themeName": "",
+  "clientServiceWorkerSource": "C:\\Users\\bmbga\\Documents\\workspace\\Sandstone\\build\\sw.ts",
+  "pwaEnabled": false,
+  "offlineEnabled": false,
+  "offlinePath": "'offline.html'"
+}
