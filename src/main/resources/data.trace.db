@@ -1,0 +1,33 @@
+2022-11-15 18:37:44 jdbc[3]: exception
+java.sql.SQLClientInfoException: Client info name 'ApplicationName' not supported.
+	at org.h2.jdbc.JdbcConnection.setClientInfo(JdbcConnection.java:1573)
+	at com.intellij.database.remote.jdbc.impl.RemoteConnectionImpl.setClientInfo(RemoteConnectionImpl.java:470)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at java.rmi/sun.rmi.server.UnicastServerRef.dispatch(UnicastServerRef.java:360)
+	at java.rmi/sun.rmi.transport.Transport$1.run(Transport.java:200)
+	at java.rmi/sun.rmi.transport.Transport$1.run(Transport.java:197)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712)
+	at java.rmi/sun.rmi.transport.Transport.serviceCall(Transport.java:196)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.handleMessages(TCPTransport.java:587)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(TCPTransport.java:828)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.lambda$run$0(TCPTransport.java:705)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(TCPTransport.java:704)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-11-15 15:00:43 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM PRODUCTS WHERE name = 'Uxoricide' AND description = 'Killing of one'[*]s own wife  ' AND price = 75.33466876336894 AND image = 'https://picsum.photos/seed/39/200';"; SQL statement:
+SELECT * FROM PRODUCTS WHERE name = 'Uxoricide' AND description = 'Killing of one's own wife  ' AND price = 75.33466876336894 AND image = 'https://picsum.photos/seed/39/200'; [42000-214]
+2022-11-15 15:00:43 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO PRODUCTS VALUES ('Uxoricide', 'Killing of one'[*]s own wife  ', 75.33466876336894, 'https://picsum.photos/seed/39/200')"; expected "[, ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, ,, )"; SQL statement:
+INSERT INTO PRODUCTS VALUES ('Uxoricide', 'Killing of one's own wife  ', 75.33466876336894, 'https://picsum.photos/seed/39/200') [42001-214]
+2022-11-15 15:00:43 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM PRODUCTS WHERE name = 'Urbacity' AND description = 'Excessive pride in one'[*]s city  ' AND price = 53.605549984322955 AND image = 'https://picsum.photos/seed/51/200';"; SQL statement:
+SELECT * FROM PRODUCTS WHERE name = 'Urbacity' AND description = 'Excessive pride in one's city  ' AND price = 53.605549984322955 AND image = 'https://picsum.photos/seed/51/200'; [42000-214]
+2022-11-15 15:00:43 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO PRODUCTS VALUES ('Urbacity', 'Excessive pride in one'[*]s city  ', 53.605549984322955, 'https://picsum.photos/seed/51/200')"; expected "[, ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, ,, )"; SQL statement:
+INSERT INTO PRODUCTS VALUES ('Urbacity', 'Excessive pride in one's city  ', 53.605549984322955, 'https://picsum.photos/seed/51/200') [42001-214]
