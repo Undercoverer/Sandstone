@@ -4,12 +4,11 @@ import com.tshirts.sandstone.util.annotations.H2FieldData;
 public class Profile {
     @H2FieldData(primaryKey = true, notNull = true)
     private String username;
-
     @H2FieldData(notNull = true)
     private String firstName;
     @H2FieldData(notNull = true)
     private String lastName;
-    @H2FieldData(notNull = true)
+    @H2FieldData(notNull = true, unique = true)
     private String email;
     @H2FieldData(notNull = true)
     private String phone;

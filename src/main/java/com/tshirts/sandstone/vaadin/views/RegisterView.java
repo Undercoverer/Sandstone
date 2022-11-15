@@ -2,6 +2,7 @@ package com.tshirts.sandstone.vaadin.views;
 
 import com.tshirts.sandstone.util.PermissionLevel;
 import com.tshirts.sandstone.util.Profile;
+import com.tshirts.sandstone.util.Util;
 import com.tshirts.sandstone.util.managers.LoginManager;
 import com.tshirts.sandstone.util.managers.ProfileManager;
 import com.vaadin.flow.component.UI;
@@ -117,17 +118,25 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
                 phoneNumber.setInvalid(true);
                 phoneNumber.setErrorMessage("Please enter all fields");
             } else {
-                if (ProfileManager.getInstance().getProfile(email.getValue(), password.getValue()) == null) {
+                // Check if username is already taken
+                if (ProfileManager.getInstance().getProfile(username.getValue(), password.getValue()) == null) {
                     // Create new account
                     String[] name = fullName.getValue().split(" ");
                     Profile profile = new Profile(username.getValue(), name[0], name[1], email.getValue(), phoneNumber.getValue(), password.getValue(), Objects.hashCode(username), PermissionLevel.USER);
-                    ProfileManager.getInstance().add(profile);
-                    LoginManager.getInstance().setLoggedIn(true, profile);
-                    // Navigate to main page
-                    email.setInvalid(false);
-                    password.setInvalid(false);
-                    UI.getCurrent().navigate("");
-                    UI.getCurrent().getPage().reload();
+                    if (ProfileManager.getInstance().add(profile)) {
+                        LoginManager.getInstance().setLoggedIn(true, profile);
+                        // Navigate to main page
+                        email.setInvalid(false);
+                        password.setInvalid(false);
+
+                        UI.getCurrent().navigate("/");
+
+                    }
+                } else {
+                    // Username or email already exists
+                    username.setInvalid(true);
+                    email.setInvalid(true);
+                    username.setErrorMessage("Username or email already exists");
                 }
             }
 

@@ -11,4 +11,6 @@ public @interface H2FieldData {
     boolean primaryKey() default false;
     boolean notNull() default false;
     boolean autoIncrement() default false;
+
+    boolean unique() default false;
 }

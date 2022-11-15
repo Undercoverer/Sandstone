@@ -15,7 +15,6 @@ public class ProductList extends VerticalLayout {
     static Grid<Product> grid = new Grid<>(Product.class);
     static List<Product> products;
 
-    // TODO: Finish implementing ProductList component and update it when files are uploaded
     public ProductList() {
         Collection<Product> dbAll = Util.DB.getAll(Product.class);
         if (dbAll != null) {
