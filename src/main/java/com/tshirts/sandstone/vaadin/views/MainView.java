@@ -129,6 +129,7 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         dialog.add(new Paragraph("Profile information"));
         Profile loggedInUser = LoginManager.getInstance().getLoggedInUser();
         dialog.add(new Paragraph("Name: %s %s".formatted(loggedInUser.getFirstName(), loggedInUser.getLastName())));
+        dialog.add(new Paragraph("Username: %s".formatted(loggedInUser.getUsername())));
         dialog.add(new Paragraph("Email: %s".formatted(loggedInUser.getEmail())));
         dialog.add(new Paragraph("Phone number: %s".formatted(loggedInUser.getPhone())));
         dialog.add(new Paragraph("Profile Id: %s".formatted(loggedInUser.getProfileId())));
