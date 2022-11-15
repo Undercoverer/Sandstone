@@ -1,6 +1,7 @@
 package com.tshirts.sandstone.util.managers;
 
 import com.google.gson.Gson;
+import com.tshirts.sandstone.util.Product;
 import com.tshirts.sandstone.util.Profile;
 import com.tshirts.sandstone.util.Util;
 
@@ -12,6 +13,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class ProfileManager implements IManager<Profile> {
@@ -101,18 +103,21 @@ public class ProfileManager implements IManager<Profile> {
     }
 
     @Override
-    public boolean update(Profile profile, String field, Object value) {
-        try {
-            Field f = profile.getClass().getDeclaredField(field);
-            f.setAccessible(true);
-            f.set(profile, value);
-            return Util.DB.update(profile, field, value);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+    public boolean update(Profile item, Map<String, Object> fields) {
+        Util.DB.update(item, fields);
+        for (Map.Entry<String, Object> entry : fields.entrySet()) {
+            try {
+                Field field = Profile.class.getDeclaredField(entry.getKey());
+                field.setAccessible(true);
+                field.set(item, entry.getValue());
 
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return true;
+    }
 
     public Profile get(int profileId) {
         return Util.DB.get(Profile.class, "profileId", profileId);

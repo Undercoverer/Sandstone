@@ -74,13 +74,11 @@ public class Util {
         };
     }
 
-    public static Field setAccessible(Field field) {
+    public static void setAccessible(Field field) {
         try {
             field.setAccessible(true);
-            return field;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
     }
 
