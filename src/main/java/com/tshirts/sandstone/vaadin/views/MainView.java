@@ -6,6 +6,7 @@ import com.tshirts.sandstone.util.PermissionLevel;
 import com.tshirts.sandstone.util.Profile;
 import com.tshirts.sandstone.util.managers.LoginManager;
 import com.tshirts.sandstone.util.managers.ProductManager;
+import com.tshirts.sandstone.vaadin.components.ProductList;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -25,6 +26,7 @@ import com.vaadin.flow.router.Route;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 @Route("")
 //@CssImport("./styles/shared-styles.css")
@@ -97,21 +99,12 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
             Upload upload = new Upload();
             upload.setAcceptedFileTypes("application/json");
             upload.setDropAllowed(true);
-            upload.setReceiver((Receiver) (filename, mimeType) -> {
-                FileOutputStream fos;
-                // Save in resources/uploads
-                File file = new File("src/main/resources/uploads/" + filename);
-                try {
-                    file.createNewFile();
-                    return new FileOutputStream(file);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-
-            });
+            upload.setReceiver((Receiver) MainView::receiveUpload);
             upload.addSucceededListener(event -> dialog.add(ProductManager.getInstance().import_(new File("src/main/resources/uploads/" + event.getFileName()))
                     ? new Text("File imported successfully")
                     : new Text("File import failed")));
+            dialog.add(upload);
+            dialog.open();
         });
         navigationButtons.add(cart);
 
@@ -167,6 +160,20 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         return "https://via.placeholder.com/" + ((width == height) ? width : width + "x" + height) + "/" + backColor + "/" + textColor + "?text=" + text;
     }
 
+    // TODO: Implement upload functionality. Look online for examples.
+    private static OutputStream receiveUpload(String filename, String mimeType) {
+        FileOutputStream fos;
+// Save in resources/uploads
+        File file = new File("src/main/resources/uploads/" + filename);
+        try {
+            file.createNewFile();
+            return new FileOutputStream(file);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+
+    }
+
     /**
      * Generates the main content panel.
      * A horizontally resizable panel that contains the product list on the left and the product details on the right.
@@ -178,7 +185,7 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         mainContent.setOrientation(SplitLayout.Orientation.HORIZONTAL);
         mainContent.setSplitterPosition(100);
         mainContent.getStyle().set("overflow", "hidden");
-//        mainContent.addToPrimary(new ProductList());
+        mainContent.addToPrimary(new ProductList());
 
         return mainContent;
     }

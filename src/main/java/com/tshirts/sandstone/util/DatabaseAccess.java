@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -42,7 +43,7 @@ public class DatabaseAccess implements AutoCloseable {
         }
     }
 
-    private static <T> String getTableName(T type) {
+    public static <T> String getTableName(T type) {
         if (type instanceof Class<?> clazz) {
             return clazz.getSimpleName().toUpperCase() + "S";
         } else {
@@ -254,12 +255,12 @@ public class DatabaseAccess implements AutoCloseable {
         Arrays.stream(clazz.getDeclaredFields()).
                 filter(f -> f.getName().equals(field))
                 .findFirst().ifPresent(f -> {
-            if (f.getType().equals(String.class) || Util.isEnum(f.getType())) {
-                sql.append("'").append(val).append("'");
-            } else {
-                sql.append(val);
-            }
-        });
+                    if (f.getType().equals(String.class) || Util.isEnum(f.getType())) {
+                        sql.append("'").append(val).append("'");
+                    } else {
+                        sql.append(val);
+                    }
+                });
         sql.append(";");
         try {
             ResultSet resultSet = conn.createStatement().executeQuery(sql.toString());
@@ -276,7 +277,77 @@ public class DatabaseAccess implements AutoCloseable {
     }
 
     public <T, U> boolean update(T item, String type, U val) {
-        // TODO Implement
-        return false;
+        if (item == null || !tableExists(item.getClass())) {
+            return false;
+        }
+        String tableName = getTableName(item);
+        StringBuilder sql = new StringBuilder();
+        sql.append("UPDATE ").append(tableName).append(" SET ").append(type).append(" = ");
+        Arrays.stream(item.getClass().getDeclaredFields()).
+                filter(f -> f.getName().equals(type))
+                .findFirst().ifPresent(f -> {
+                    if (f.getType().equals(String.class) || Util.isEnum(f.getType())) {
+                        sql.append("'").append(val).append("'");
+                    } else {
+                        sql.append(val);
+                    }
+                });
+        sql.append(" WHERE ");
+        Field[] fields = item.getClass().getDeclaredFields();
+
+        for (int i = 0; i < fields.length; i++) {
+            Util.setAccessible(fields[i]);
+            appendTypeAndData(item, sql, fields[i], true);
+            if (i != fields.length - 1) {
+                sql.append(" AND ");
+            }
+        }
+        sql.append(";");
+        try {
+            System.out.println(sql);
+            conn.createStatement().execute(sql.toString());
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public <E> boolean update(E item, Map<String, Object> fields) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("UPDATE ").append(getTableName(item)).append(" SET ");
+        for (Map.Entry<String, Object> entry : fields.entrySet()) {
+            sql.append(entry.getKey()).append(" = ");
+            Arrays.stream(item.getClass().getDeclaredFields()).
+                    filter(f -> f.getName().equals(entry.getKey()))
+                    .findFirst().ifPresent(f -> {
+                        if (f.getType().equals(String.class) || Util.isEnum(f.getType())) {
+                            sql.append("'").append(entry.getValue()).append("'");
+                        } else {
+                            sql.append(entry.getValue());
+                        }
+                    });
+            sql.append(", ");
+        }
+        sql.delete(sql.length() - 2, sql.length());
+
+        sql.append(" WHERE ");
+        Field[] fields1 = item.getClass().getDeclaredFields();
+        for (int i = 0; i < fields1.length; i++) {
+            Util.setAccessible(fields1[i]);
+            appendTypeAndData(item, sql, fields1[i], true);
+            if (i != fields1.length - 1) {
+                sql.append(" AND ");
+            }
+        }
+        sql.append(";");
+        try {
+            System.out.println(sql);
+            conn.createStatement().execute(sql.toString());
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

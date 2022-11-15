@@ -7,6 +7,7 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 //TODO Fix static shit
@@ -14,8 +15,14 @@ public class ProductList extends VerticalLayout {
     static Grid<Product> grid = new Grid<>(Product.class);
     static List<Product> products;
 
+    // TODO: Finish implementing ProductList component and update it when files are uploaded
     public ProductList() {
-        products = new ArrayList<>(Util.DB.getAll(Product.class));
+        Collection<Product> dbAll = Util.DB.getAll(Product.class);
+        if (dbAll != null) {
+            products = new ArrayList<>(dbAll);
+        } else {
+            products = new ArrayList<>();
+        }
 
         grid.setClassName("product-grid");
         grid.setWidth("100%");

@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class ProductManager implements IManager<Product> {
@@ -19,9 +20,7 @@ public class ProductManager implements IManager<Product> {
 
 
     private ProductManager() {
-        if (!Util.DB.tableExists(Product.class)) {
-            Util.DB.createTable(Product.class);
-        }
+        Util.DB.createTable(Product.class);
         products = new ArrayList<>();
         products.addAll(Util.DB.getAll(Product.class));
     }
@@ -96,17 +95,21 @@ public class ProductManager implements IManager<Product> {
     }
 
     @Override
-    public boolean update(Product product, String field, Object value) {
-        try {
-            Field f = product.getClass().getDeclaredField(field);
-            Util.setAccessible(f);
-            f.set(product, value);
-            return Util.DB.update(product, field, value);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-            return false;
+    public boolean update(Product item, Map<String, Object> fields) {
+        Util.DB.update(item, fields);
+        for (Map.Entry<String, Object> entry : fields.entrySet()) {
+            try {
+                Field field = Product.class.getDeclaredField(entry.getKey());
+                field.setAccessible(true);
+                field.set(item, entry.getValue());
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+                return false;
+            }
         }
+        return true;
     }
+
 
     public Product get(String name) {
         return Util.DB.get(Product.class, "name", name);

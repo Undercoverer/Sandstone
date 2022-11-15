@@ -5,6 +5,7 @@ package com.tshirts.sandstone.vaadin.views;
 
 import com.tshirts.sandstone.util.PermissionLevel;
 import com.tshirts.sandstone.util.Profile;
+import com.tshirts.sandstone.util.Util;
 import com.tshirts.sandstone.util.managers.LoginManager;
 import com.tshirts.sandstone.util.managers.ProfileManager;
 import com.vaadin.flow.component.UI;
@@ -24,6 +25,8 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
+
+import java.util.HashMap;
 
 /**
  * A list of users displayed in a table.
@@ -185,13 +188,14 @@ public class UsersView extends VerticalLayout implements BeforeEnterObserver {
                         return;
                     }
                     // Update the user's information
-                    profile.setFirstName(firstName.getValue());
-                    profile.setLastName(lastName.getValue());
-                    profile.setEmail(email.getValue());
-                    profile.setPhone(phone.getValue());
-                    profile.setPermissionLevel(PermissionLevel.valueOf(permissionLevel.getValue()));
-//                    ProfileManager.getInstance().removeProfile(profile);
-//                    ProfileManager.getInstance().addProfile(profile);
+                    HashMap<String, Object> updates = new HashMap<>();
+                    updates.put("firstName", firstName.getValue());
+                    updates.put("lastName", lastName.getValue());
+                    updates.put("email", email.getValue());
+                    updates.put("phone", phone.getValue());
+                    updates.put("permissionLevel", PermissionLevel.valueOf(permissionLevel.getValue()));
+                    ProfileManager.getInstance().update(profile, updates);
+
                     // Refresh the table
                     grid.setItems(ProfileManager.getInstance().getAll());
                     dialog.close();
@@ -260,9 +264,12 @@ public class UsersView extends VerticalLayout implements BeforeEnterObserver {
                         return;
                     }
                     // Update the user's information
-                    profile.setPassword(password.getValue());
+                    HashMap<String, Object> updates = new HashMap<>();
+                    updates.put("hashedPassword", password.getValue().hashCode());
+                    ProfileManager.getInstance().update(profile, updates);
                     // Refresh the table
-                    grid.setItems(ProfileManager.getInstance().getAll());
+                    updateList();
+
                     dialog.close();
                 });
 
@@ -303,9 +310,7 @@ public class UsersView extends VerticalLayout implements BeforeEnterObserver {
 
         // Add home button
         Button homeButton = new Button("Home");
-        homeButton.addClickListener(event -> {
-            UI.getCurrent().navigate("");
-        });
+        homeButton.addClickListener(event -> UI.getCurrent().navigate(""));
         homeButton.setIcon(new Icon(VaadinIcon.HOME));
         HorizontalLayout toolbar = new HorizontalLayout(toolbarLeft, homeButton);
         toolbar.setAlignSelf(Alignment.STRETCH, toolbar);
