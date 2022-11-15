@@ -86,9 +86,9 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         });
         navigationButtons.add(Users);
 
-        Button cart = new Button(new Icon(VaadinIcon.CART));
-        cart.setText("Import File");
-        cart.addClickListener(e -> {
+        Button file = new Button(new Icon(VaadinIcon.FILE));
+        file.setText("Import File");
+        file.addClickListener(e -> {
             Dialog dialog = new Dialog();
             dialog.setWidth("400px");
             dialog.setHeight("200px");
@@ -106,7 +106,7 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
             dialog.add(upload);
             dialog.open();
         });
-        navigationButtons.add(cart);
+        navigationButtons.add(file);
 
         Button login = new Button(new Icon(VaadinIcon.USER));
         if (LoginManager.getInstance().isLoggedIn()) {
