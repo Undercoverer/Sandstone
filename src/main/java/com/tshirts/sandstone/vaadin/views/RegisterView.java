@@ -127,7 +127,6 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
                     email.setInvalid(false);
                     password.setInvalid(false);
                     UI.getCurrent().navigate("");
-                    UI.getCurrent().getPage().reload();
                 }
             }
 
