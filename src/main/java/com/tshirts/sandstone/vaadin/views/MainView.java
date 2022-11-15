@@ -77,7 +77,7 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         Button home = new Button(new Icon(VaadinIcon.HOME));
         navigationButtons.add(home);
 
-        Button Users = new Button(new Icon(VaadinIcon.INFO_CIRCLE));
+        Button Users = new Button(new Icon(VaadinIcon.USERS));
         Users.setText("Users");
         Users.addClickListener(e -> {
             UI.getCurrent().navigate("users");
