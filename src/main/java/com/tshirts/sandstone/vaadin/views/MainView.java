@@ -86,7 +86,7 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         });
         navigationButtons.add(Users);
 
-        Button file = new Button(new Icon(VaadinIcon.FILE));
+        Button file = new Button(new Icon(VaadinIcon.FILE_ADD));
         file.setText("Import File");
         file.addClickListener(e -> {
             Dialog dialog = new Dialog();
