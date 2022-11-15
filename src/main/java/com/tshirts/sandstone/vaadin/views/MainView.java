@@ -2,30 +2,33 @@ package com.tshirts.sandstone.vaadin.views;
 
 // A Main view that is the application made with vaadin
 
+import com.google.gson.stream.JsonReader;
 import com.tshirts.sandstone.util.PermissionLevel;
 import com.tshirts.sandstone.util.Profile;
 import com.tshirts.sandstone.util.managers.LoginManager;
 import com.tshirts.sandstone.util.managers.ProductManager;
 import com.tshirts.sandstone.vaadin.components.ProductList;
+import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
-import com.vaadin.flow.component.upload.Receiver;
+import com.vaadin.flow.component.upload.SucceededEvent;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 
 @Route("")
@@ -86,27 +89,10 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         });
         navigationButtons.add(Users);
 
-        Button file = new Button(new Icon(VaadinIcon.FILE_ADD));
-        file.setText("Import File");
-        file.addClickListener(e -> {
-            Dialog dialog = new Dialog();
-            dialog.setWidth("400px");
-            dialog.setHeight("200px");
-            dialog.setCloseOnEsc(true);
-            dialog.setCloseOnOutsideClick(true);
-            dialog.add(new Text("Import File"));
-
-            Upload upload = new Upload();
-            upload.setAcceptedFileTypes("application/json");
-            upload.setDropAllowed(true);
-            upload.setReceiver((Receiver) MainView::receiveUpload);
-            upload.addSucceededListener(event -> dialog.add(ProductManager.getInstance().import_(new File("src/main/resources/uploads/" + event.getFileName()))
-                    ? new Text("File imported successfully")
-                    : new Text("File import failed")));
-            dialog.add(upload);
-            dialog.open();
-        });
-        navigationButtons.add(file);
+        Button cart = new Button(new Icon(VaadinIcon.FILE_ADD));
+        cart.setText("Import File");
+        cart.addClickListener(MainView::importFileEventCallback);
+        navigationButtons.add(cart);
 
         Button login = new Button(new Icon(VaadinIcon.USER));
         if (LoginManager.getInstance().isLoggedIn()) {
@@ -147,8 +133,7 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         logout.addClickListener(event -> {
             LoginManager.getInstance().setLoggedIn(false, null);
             dialog.close();
-            // Wait for the dialog to close before navigating to the login page
-            UI.getCurrent().getPage().executeJs("setTimeout(() => { window.location.replace('/login'); }, 100);");
+            UI.getCurrent().navigate("/login");
         });
 
         dialog.add(logout);
@@ -160,19 +145,60 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         return "https://via.placeholder.com/" + ((width == height) ? width : width + "x" + height) + "/" + backColor + "/" + textColor + "?text=" + text;
     }
 
-    // TODO: Implement upload functionality. Look online for examples.
-    private static OutputStream receiveUpload(String filename, String mimeType) {
-        FileOutputStream fos;
-// Save in resources/uploads
-        File file = new File("src/main/resources/uploads/" + filename);
-        try {
-            file.createNewFile();
-            return new FileOutputStream(file);
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
+    private static void importFileEventCallback(ClickEvent<Button> e) {
+        Dialog dialog = new Dialog();
+        dialog.setWidth("400px");
+        dialog.setHeight("200px");
+        dialog.setCloseOnEsc(true);
+        dialog.setCloseOnOutsideClick(true);
 
+        H4 title = new H4("Import File");
+        dialog.add(title);
+
+        Paragraph hint = new Paragraph("File size must be less than 10MB. Only .json files are accepted.");
+        dialog.add(hint);
+
+        Upload upload = new Upload();
+        upload.setAcceptedFileTypes("application/json");
+        upload.setDropAllowed(true);
+        upload.setMaxFileSize(10_000_000);
+        upload.setReceiver(MainView::receiveUpload);
+
+        upload.addSucceededListener(MainView::fileUploadSuccessCallback);
+        dialog.add(upload);
+        dialog.open();
     }
+
+    private static void fileUploadSuccessCallback(SucceededEvent succeededEvent) {
+        // Create confirmation dialog to display general information about the file
+        // and ask the user to confirm the import
+        Dialog dialog = new Dialog();
+        H4 title = new H4("File Details");
+        dialog.add(title);
+
+        // Get the file name
+        String fileName = succeededEvent.getFileName();
+        dialog.add(new Paragraph("File name: %s".formatted(fileName)));
+
+        // Get the file size
+        long fileSize = succeededEvent.getContentLength();
+        dialog.add(new Paragraph("File size: %s".formatted(fileSize)));
+
+        // Check to see what data is in the file (profiles or products)
+        String fileType = "Unknown";
+//        JsonReader jsonReader = new JsonReader(new
+    }
+
+    private static OutputStream receiveUpload(String fileName, String mimeType) {
+        File file = new File("src/main/resources/uploads/" + fileName);
+        try {
+            return new FileOutputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     /**
      * Generates the main content panel.

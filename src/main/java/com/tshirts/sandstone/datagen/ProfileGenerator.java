@@ -16,8 +16,9 @@ import java.util.Collection;
 import java.util.Random;
 
 public class ProfileGenerator {
-
     public static void main(String[] args) {
+        // Create table if it doesn't exist
+        Util.DB.createTable(Profile.class);
         Collection<Profile> all = Util.DB.getAll(Profile.class);
         if (all == null || all.size() == 0) {
             generateProfiles();

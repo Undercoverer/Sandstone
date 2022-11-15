@@ -104,7 +104,6 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
             } else {
                 Profile profile = ProfileManager.getInstance().getProfile(username.getValue(), password.getValue());
                 if (profile != null) {
-                    // Go to main page
                     LoginManager.getInstance().setLoggedIn(true, profile);
                     username.setInvalid(false);
                     password.setInvalid(false);

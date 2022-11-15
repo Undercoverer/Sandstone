@@ -70,6 +70,7 @@ public class DatabaseAccess implements AutoCloseable {
         try {
             conn.createStatement().execute(sql.toString());
         } catch (SQLException e) {
+
             e.printStackTrace();
             return false;
         }
@@ -101,6 +102,9 @@ public class DatabaseAccess implements AutoCloseable {
                         if (annotation.notNull()) {
                             out.accept("NOT NULL");
                         }
+                        if (annotation.unique()) {
+                            out.accept("UNIQUE");
+                        }
                         if (annotation.autoIncrement()) {
                             out.accept("AUTO_INCREMENT");
                         }
@@ -113,6 +117,7 @@ public class DatabaseAccess implements AutoCloseable {
         sql.append(")");
 
         try {
+            System.out.println(sql);
             conn.createStatement().execute(sql.toString());
         } catch (SQLException e) {
             e.printStackTrace();
@@ -172,7 +177,6 @@ public class DatabaseAccess implements AutoCloseable {
     private <T> void appendTypeAndData(T item, StringBuilder sql, Field field, boolean includeFieldName) {
         try {
             Object obj = field.get(item);
-            System.out.printf("Field: %s, Type: %s, Value: %s%n", field.getName(), field.getType(), obj);
             if (includeFieldName) {
                 sql.append(field.getName()).append(" = ");
             }
@@ -188,7 +192,7 @@ public class DatabaseAccess implements AutoCloseable {
 
     public <T> boolean addAll(Collection<T> items) {
         for (T item : items) {
-            if (itemExists(item)) {
+            if (itemExists(item) || constrainedItemExists(item)) {
                 return false;
             }
         }
@@ -227,6 +231,32 @@ public class DatabaseAccess implements AutoCloseable {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public <T> boolean constrainedItemExists(T item){
+        if (item == null || !tableExists(item.getClass())) {
+            return false;
+        }
+        Field[] fields = item.getClass().getDeclaredFields();
+        boolean itemExists = false;
+        for (Field field : fields) {
+            field.setAccessible(true);
+            if (field.isAnnotationPresent(H2FieldData.class)) {
+                H2FieldData annotation = field.getAnnotation(H2FieldData.class);
+                if (annotation != null && (annotation.primaryKey() || annotation.unique())) {
+                    StringBuilder sql = new StringBuilder("SELECT * FROM " + getTableName(item));
+                    sql.append(" WHERE ");
+                    appendTypeAndData(item, sql, field, true);
+                    try {
+                        itemExists |= conn.createStatement().executeQuery(sql.toString()).next();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return itemExists;
+
     }
 
     public <T> Collection<T> getAll(Class<T> type) {
