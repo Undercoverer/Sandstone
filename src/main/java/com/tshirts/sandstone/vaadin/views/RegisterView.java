@@ -118,17 +118,15 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
                 phoneNumber.setInvalid(true);
                 phoneNumber.setErrorMessage("Please enter all fields");
             } else {
-                // Check if username is already taken
                 if (ProfileManager.getInstance().getProfile(username.getValue(), password.getValue()) == null) {
                     // Create new account
                     String[] name = fullName.getValue().split(" ");
-                    Profile profile = new Profile(username.getValue(), name[0], name[1], email.getValue(), phoneNumber.getValue(), password.getValue(), Objects.hashCode(username), PermissionLevel.USER);
+                    Profile profile = new Profile(username.getValue(), name[0], name[1], email.getValue(), phoneNumber.getValue(), password.getValue(), Objects.hashCode(username), PermissionLevel.GUEST);
                     if (ProfileManager.getInstance().add(profile)) {
                         LoginManager.getInstance().setLoggedIn(true, profile);
                         // Navigate to main page
                         email.setInvalid(false);
                         password.setInvalid(false);
-
                         UI.getCurrent().navigate("/");
 
                     }

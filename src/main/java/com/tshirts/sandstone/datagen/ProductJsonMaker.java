@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ProductJsonMaker {
     public static void main(String[] args) throws IOException {
@@ -40,25 +41,32 @@ public class ProductJsonMaker {
         String[] productNames = new String[100];
         String[] productDescriptions = new String[100];
 
-        for (int i = 0; i < 100; i++) {
-            HttpsURLConnection connection = (HttpsURLConnection) new URL("https://random-words-api.vercel.app/word").openConnection();
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setDoOutput(true);
 
-            JsonArray stuff = JsonParser.parseString(new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().collect(Collectors.joining(" "))).getAsJsonArray();
-            for (JsonElement element : stuff) {
-                JsonObject object = element.getAsJsonObject();
-                for (String key : object.keySet()) {
-                    if (key.equals("word")) {
-                        productNames[i] = object.get(key).getAsString();
-                    } else if (key.equals("definition")) {
-                        productDescriptions[i] = object.get(key).getAsString();
-                    }
+        IntStream.range(0, 100).parallel().forEach(i -> {
+            try {
+                System.out.println("Getting word " + i);
+                URL url = new URL("https://random-words-api.vercel.app/word");
+                HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+                con.setRequestMethod("GET");
+                con.setRequestProperty("Content-Type", "application/json");
+                con.setRequestProperty("Accept", "application/json");
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuilder content = new StringBuilder();
+                while ((inputLine = in.readLine()) != null) {
+                    content.append(inputLine);
                 }
+                in.close();
+
+                JsonElement element = JsonParser.parseString(content.toString());
+                JsonObject object = element.getAsJsonArray().get(0).getAsJsonObject();
+                productNames[i] = object.get("word").getAsString().replace("'", "").replace("\"", "");
+                productDescriptions[i] = object.get("definition").getAsString().replace("'", "").replace("\"", "");
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            System.out.println("Product " + i + " created");
-        }
+        });
 
 
         double[] productPrices = new double[productNames.length];

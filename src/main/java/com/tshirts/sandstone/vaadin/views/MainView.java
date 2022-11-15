@@ -2,8 +2,11 @@ package com.tshirts.sandstone.vaadin.views;
 
 // A Main view that is the application made with vaadin
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.stream.JsonReader;
 import com.tshirts.sandstone.util.PermissionLevel;
+import com.tshirts.sandstone.util.Product;
 import com.tshirts.sandstone.util.Profile;
 import com.tshirts.sandstone.util.managers.LoginManager;
 import com.tshirts.sandstone.util.managers.ProductManager;
@@ -26,14 +29,15 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
+import elemental.json.Json;
+
+import java.io.*;
 
 @Route("")
 //@CssImport("./styles/shared-styles.css")
 public class MainView extends VerticalLayout implements BeforeEnterObserver {
+
+    private static ProductList productList;
 
     /**
      * The main page of the website. It contains a menu bar on top, a resizable horizontal layout in the middle and a footer at the bottom.
@@ -46,7 +50,8 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         this.getStyle().set("overflow", "hidden");
         addClassName("main-view");
         add(generateMenuBar());
-        add(generateMainContent());
+        productList = new ProductList();
+        add(productList);
         add(generateFooter());
     }
 
@@ -147,8 +152,8 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
 
     private static void importFileEventCallback(ClickEvent<Button> e) {
         Dialog dialog = new Dialog();
-        dialog.setWidth("400px");
-        dialog.setHeight("200px");
+        dialog.setWidth("30%");
+        dialog.setHeight("50%");
         dialog.setCloseOnEsc(true);
         dialog.setCloseOnOutsideClick(true);
 
@@ -165,6 +170,7 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         upload.setReceiver(MainView::receiveUpload);
 
         upload.addSucceededListener(MainView::fileUploadSuccessCallback);
+
         dialog.add(upload);
         dialog.open();
     }
@@ -173,6 +179,8 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         // Create confirmation dialog to display general information about the file
         // and ask the user to confirm the import
         Dialog dialog = new Dialog();
+        dialog.setWidth("30%");
+        dialog.setHeight("50%");
         H4 title = new H4("File Details");
         dialog.add(title);
 
@@ -182,39 +190,66 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
 
         // Get the file size
         long fileSize = succeededEvent.getContentLength();
-        dialog.add(new Paragraph("File size: %s".formatted(fileSize)));
+        dialog.add(new Paragraph("File size: %s bytes".formatted(fileSize)));
 
-        // Check to see what data is in the file (profiles or products)
-        String fileType = "Unknown";
-//        JsonReader jsonReader = new JsonReader(new
+        // Go through the file and get the first three products and the last product as
+        // A sample of the products in the file
+        int numProducts = 0;
+        Product[] products;
+        Product[] sampleProducts = new Product[4];
+        try {
+            Gson gson = new Gson();
+            products = gson.fromJson(new FileReader("uploads/" + fileName), Product[].class);
+            System.arraycopy(products, 0, sampleProducts, 0, 3);
+            sampleProducts[3] = products[products.length - 1];
+            numProducts = products.length;
+
+            dialog.add(new Paragraph("Number of products: %s".formatted(numProducts)));
+            dialog.add(new Paragraph("Sample products:"));
+            for (int i = 0; i < sampleProducts.length; i++) {
+                if (i == 3) {
+                    dialog.add(new Paragraph("\t..."));
+                }
+                dialog.add(new Paragraph("\tProduct %s: %s".formatted(i != 3 ? i + 1 : products.length, sampleProducts[i].getName())));
+            }
+
+
+        } catch (FileNotFoundException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
+            return;
+        }
+        dialog.add(new Paragraph("Are you sure you want to import this file?"));
+        dialog.add(new Paragraph("This will overwrite any existing products in the database."));
+        Button confirm = new Button("Confirm");
+        Product[] finalProducts = products;
+        confirm.addClickListener(e -> {
+            // Import the file
+            for (Product product : finalProducts) {
+                ProductManager.getInstance().add(product);
+            }
+            dialog.close();
+            productList.update();
+        });
+
+        dialog.add(confirm);
+        dialog.open();
     }
 
     private static OutputStream receiveUpload(String fileName, String mimeType) {
-        File file = new File("src/main/resources/uploads/" + fileName);
+        // Create a file output stream to write to the file that the user selected
+        File file = new File("uploads/" + fileName);
+        file.getParentFile().mkdirs();
+        System.out.println(file.getAbsolutePath());
+        FileOutputStream fos = null;
         try {
-            return new FileOutputStream(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
+            fos = new FileOutputStream(file);
+        } catch (FileNotFoundException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
         }
+        return fos;
     }
 
 
-    /**
-     * Generates the main content panel.
-     * A horizontally resizable panel that contains the product list on the left and the product details on the right.
-     *
-     * @return the main content panel.
-     */
-    private SplitLayout generateMainContent() {
-        SplitLayout mainContent = new SplitLayout();
-        mainContent.setOrientation(SplitLayout.Orientation.HORIZONTAL);
-        mainContent.setSplitterPosition(100);
-        mainContent.getStyle().set("overflow", "hidden");
-        mainContent.addToPrimary(new ProductList());
-
-        return mainContent;
-    }
 
     /**
      * Generates the footer panel.

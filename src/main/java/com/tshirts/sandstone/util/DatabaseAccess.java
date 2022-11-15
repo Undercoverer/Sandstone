@@ -52,7 +52,7 @@ public class DatabaseAccess implements AutoCloseable {
     }
 
     public <T> boolean add(T item) {
-        if (item == null || !tableExists(item.getClass()) || itemExists(item)) {
+        if (item == null || !tableExists(item.getClass()) || itemExists(item) || constrainedItemExists(item)) {
             return false;
         }
         String tableName = getTableName(item);

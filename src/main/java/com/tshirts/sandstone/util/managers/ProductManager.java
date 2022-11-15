@@ -79,7 +79,6 @@ public class ProductManager implements IManager<Product> {
         for (Product product : productArray) {
             add(product);
         }
-        ProductList.update();
         return true;
     }
 

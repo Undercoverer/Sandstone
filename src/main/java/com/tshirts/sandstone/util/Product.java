@@ -25,12 +25,12 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
+        return "Product[" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", image='" + image + '\'' +
-                '}';
+                ']';
     }
 
     public String getName() {
